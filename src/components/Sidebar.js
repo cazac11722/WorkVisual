@@ -11,10 +11,15 @@ const Sidebar = () => {
   // 각 메뉴의 URL 매칭을 확인하는 함수
   const isActive = (path) => location.pathname === path;
 
+  const AdminDataTest = [
+    {"name" : "a", "href" : "/a"},
+    {"name" : "b", "href" : "/b"},
+  ]
+
   const AdminData = [
-    {"name" : "직원 관리", "href" : "employee-management"},
-    {"name" : "프로젝트 관리", "href" : "project-management"},
-    {"name" : "통계 및 분석", "href" : "statistics-management"},
+    {"name" : "직원 관리", "href" : "/employee-management"},
+    {"name" : "프로젝트 관리", "href" : "/project-management"},
+    {"name" : "통계 및 분석", "href" : "/statistics-management"},
   ]
 
   return (
@@ -23,7 +28,7 @@ const Sidebar = () => {
       <nav className="row padding-y-2em">
         <ul>
           <Menulink MenuIcon="Dashboard" MenuActvie={isActive('/') ? true : false} MenuName="대시보기" MenuHref="/" />
-          <MenuSubLink MenuIcon="Project" MenuName="내 프로젝트" />
+          <MenuSubLink MenuIcon="Project" MenuName="내 프로젝트" MenuData={AdminDataTest} />
           <MenuSubLink MenuIcon="user" MenuName="팀 활동" MenuData={AdminData} />
           <Menulink MenuIcon="Comments" MenuName="코멘트 및 피드백" MenuHref="#" />
           <Menulink MenuIcon="Commuting" MenuActvie={isActive('/commute-view') ? true : false} MenuName="출퇴근 및 기타관리" MenuHref="/commute-view" />

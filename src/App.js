@@ -8,7 +8,8 @@ import LoginPage from './pages/auth/LoginPage.js';
 import SigninPage from './pages/auth/SigninPage.js';
 import Dashboard from './pages/home/Dashboard.js';
 import EmployeeManagement from './pages/management/EmployeeManagement.js';
-
+import APage from './pages/project/a.js';
+import BPage from './pages/project/b.js';
 
 function App() {
   return (
@@ -16,15 +17,13 @@ function App() {
       <Routes>
 
         <Route path='/' element={<Dashboard />} />
-
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signin' element={<SigninPage />} />
 
+        <Route path='/a' element={<APage />} />
+        <Route path='/b' element={<BPage />} />
 
         <Route path='/employee-management' element={<EmployeeManagement />} />
-
-        
-        
 
       </Routes>
     </Router>
