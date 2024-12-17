@@ -1,0 +1,145 @@
+/* 메뉴 style */
+
+.nav {
+    display: flex;
+    align-items: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    line-height: 3em;
+    width: 100%;
+    cursor: pointer;
+}
+
+.nav_sub {
+    height: 0;
+    overflow: hidden;
+}
+
+.active_menu.active .nav>svg {
+    transform: rotate(180deg);
+}
+
+.nav_sub.active {
+    height: auto;
+    padding: .5em 2em;
+}
+
+.nav_sub a {
+    padding-left: 1em;
+    color: #fff;
+    line-height: 2.5em;
+    position: relative;
+}
+
+.nav_sub a::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background-color: #3B73D1;
+    display: block;
+    border-radius: 100%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.nav.active {
+    background-color: #3B73D1;
+}
+
+
+/* 아이콘 style */
+
+.icon-border {
+    border-radius: 100%;
+    background-color: var(--bg--main--color);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 페이지 뷰 style */
+
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.project-view__reply {
+
+}
+
+
+.project-view__reply > li {
+    padding: 0 1em;
+    border-left: 3px solid var(--bg--main--color);
+    margin-top: 2em;
+}
+
+.project-view__reply__title {
+    display: flex;
+    align-items: center;
+}
+
+.project-view__reply__contents {
+    font-size: 1em;
+    color: #A6A6A6;
+}
+
+.employee-view {
+    background-color: #fff;   
+    padding: 2em;
+    border-radius: 10px;
+    height: 100vh;
+}
+
+
+.box-bor {
+    background-color: #fff;
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.12);
+    border-radius: 1em;
+    padding: 2em;
+}
+
+/* 버튼 style */
+
+.btn {
+    background-color: var(--bg--sub--color);
+    border: 0;
+    height: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 5px;
+}
+
+/* 아이콘 sytle */
+
+.icon {
+    margin-top: -0.1em;
+}
+
+
+/* 탭 sytle  */
+
+.main_tab_head .btn_tab {
+    display: block;
+    background-color: #DFDFDF;
+    line-height: 3em;
+    padding: 0 2em;
+    margin-left: 1.2em;
+    color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: #A6A6A6;
+}
+
+.main_tab_head .btn_tab.active {
+    background-color: #1B3262;
+    color: #fff;
+}
