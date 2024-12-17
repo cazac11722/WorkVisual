@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
-import "../../styles/b.css"
+import "../../assets/styles/b.css"
 
 const BPage = () => {
     return (

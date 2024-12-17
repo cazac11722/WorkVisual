@@ -1,10 +1,10 @@
 import React from 'react';
-import HeaderWidget from './widget/header_widget';
+import Header from '../../components/Header';
 
 const ProjectView = () => {
     return (
         <div class="row w100">
-            <HeaderWidget />
+            <Header />
             <main>
                 <section class="row padding-3em bg-viwe">
                     <div class="project-view">

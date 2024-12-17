@@ -17,9 +17,9 @@ const Sidebar = () => {
   ]
 
   const AdminData = [
-    {"name" : "직원 관리", "href" : "/employee-management"},
-    {"name" : "프로젝트 관리", "href" : "/project-management"},
-    {"name" : "통계 및 분석", "href" : "/statistics-management"},
+    {"name" : "직원 관리", "href" : "/WorkVisual/employee-management"},
+    {"name" : "프로젝트 관리", "href" : "/WorkVisual/project-management"},
+    {"name" : "통계 및 분석", "href" : "/WorkVisual/statistics-management"},
   ]
 
   return (
@@ -27,12 +27,12 @@ const Sidebar = () => {
       <button type="button" className="bg-sub btn"><span className="text_href margin-right-1em">새 프로젝트 추가</span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" /></svg></button>
       <nav className="row padding-y-2em">
         <ul>
-          <Menulink MenuIcon="Dashboard" MenuActvie={isActive('/') ? true : false} MenuName="대시보기" MenuHref="/" />
+          <Menulink MenuIcon="Dashboard" MenuActvie={isActive('/WorkVisual/') ? true : false} MenuName="대시보기" MenuHref="/WorkVisual/" />
           <MenuSubLink MenuIcon="Project" MenuName="내 프로젝트" MenuData={AdminDataTest} />
           <MenuSubLink MenuIcon="user" MenuName="팀 활동" MenuData={AdminData} />
           <Menulink MenuIcon="Comments" MenuName="코멘트 및 피드백" MenuHref="#" />
-          <Menulink MenuIcon="Commuting" MenuActvie={isActive('/commute-view') ? true : false} MenuName="출퇴근 및 기타관리" MenuHref="/commute-view" />
-          <Menulink MenuIcon="ActivityLog" MenuActvie={isActive('/activity-log') ? true : false} MenuName="활동로그" MenuHref="/activity-log" />
+          <Menulink MenuIcon="Commuting" MenuActvie={isActive('/WorkVisual/commute-view') ? true : false} MenuName="출퇴근 및 기타관리" MenuHref="/WorkVisual/commute-view" />
+          <Menulink MenuIcon="ActivityLog" MenuActvie={isActive('/WorkVisual/activity-log') ? true : false} MenuName="활동로그" MenuHref="/WorkVisual/activity-log" />
         </ul>
       </nav>
       <button className="bg-sub btn w70 margin-auto">

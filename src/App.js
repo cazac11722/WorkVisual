@@ -1,32 +1,49 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './styles/root.css';
-import './styles/style.css';
-import './styles/form.css';
-import './styles/font.css';
-import "./styles/comment.css"
-import LoginPage from './pages/auth/LoginPage.js';
-import SigninPage from './pages/auth/SigninPage.js';
-import Dashboard from './pages/home/Dashboard.js';
-import EmployeeManagement from './pages/management/EmployeeManagement.js';
-import APage from './pages/project/a.js';
-import BPage from './pages/project/b.js';
+import './assets/styles/root.css';
+import './assets/styles/style.css';
+import './assets/styles/form.css';
+import './assets/styles/font.css';
+import "./assets/styles/comment.css";
+
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+
+import LoginPage from './pages/auth/LoginPage';
+import SigninPage from './pages/auth/SigninPage';
+import Dashboard from './pages/home/Dashboard';
+import EmployeeManagement from './pages/management/EmployeeManagement';
+import APage from './pages/project/a';
+import BPage from './pages/project/b';
+import ProjectManagement from './pages/management/projectManagement';
+import StatisticsManagement from './pages/management/StatisticsManagement';
+import ProjectView from './pages/project/ProjectView';
 
 function App() {
   return (
-    <Router>
-      <Routes>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path='/WorkVisual/login' element={<LoginPage />} />
+          <Route path='/WorkVisual/signin' element={<SigninPage />} />
 
-        <Route path='/' element={<Dashboard />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/signin' element={<SigninPage />} />
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path='/WorkVisual/' element={<Dashboard />} />
+            <Route path='/WorkVisual/a' element={<APage />} />
+            <Route path='/WorkVisual/b' element={<BPage />} />
+            <Route path='/WorkVisual/project/:id' element={<ProjectView />} />
+            <Route path='/WorkVisual/employee-management' element={<EmployeeManagement />} />
+            <Route path='/WorkVisual/project-management' element={<ProjectManagement />} />
+            <Route path='/WorkVisual/statistics-management' element={<StatisticsManagement />} />
+          </Route>
 
-        <Route path='/a' element={<APage />} />
-        <Route path='/b' element={<BPage />} />
-
-        <Route path='/employee-management' element={<EmployeeManagement />} />
-
-      </Routes>
-    </Router>
+          {/* 404 Page (Optional) */}
+          <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
