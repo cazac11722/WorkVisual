@@ -13,10 +13,20 @@ const ModalWidget = (props) => {
             </div>
             <div className='modal-contents'>
                 <ul className='modal-list'>
-                    <li>
-                        <label htmlFor='item1' className='modal-checkbox'><input type='checkbox' id='item1' className='modal_controller' /></label>
-                        <div className='text'><IconWidget icon="userd" color="#000" /><span>유선재</span></div>
-                    </li>
+                    {
+                        props.loading ? (
+                            <li>로디중...</li>
+                        ) : props.users.length > 0 ? (
+                            props.users.map((user, index) => (
+                                <li key={user.id}>
+                                    <label htmlFor='item1' className='modal-checkbox'><input type='checkbox' id='item1' className='modal_controller' /></label>
+                                    <div className='text'><IconWidget icon="userd" color="#000" /><span>{user.username}</span></div>
+                                </li>
+                            ))
+                        ) : (
+                            <li style={{ textAlign: 'center' }}>사용자가 없습니다.</li>
+                        )
+                    }
                 </ul>
             </div>
         </div>
