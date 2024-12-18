@@ -13,19 +13,19 @@ const Dashboard = () => {
           <section className="row padding-3em bg-viwe">
             <ul className="main_tab_head flex">
               <li>
-                <label htmlFor="main_tab1" className="btn_tab active">프로젝트 처리 차트 </label>
+                <button type="button" className="btn_tab active">프로젝트 처리 차트 </button>
               </li>
               <li>
-                <label htmlFor="main_tab2" className="btn_tab">평균 업무 진행도</label>
+                <button type="button" className="btn_tab">평균 업무 진행도</button>
               </li>
               <li>
-                <label htmlFor="main_tab3" className="btn_tab">평균 작업 프로젝트</label>
+                <button type="button" className="btn_tab">평균 작업 프로젝트</button>
               </li>
               <li>
-                <label htmlFor="main_tab4" className="btn_tab">평균 업무시간</label>
+                <button type="button" className="btn_tab">평균 업무시간</button>
               </li>
               <li>
-                <label htmlFor="main_tab5" className="btn_tab">편균 최퇴근시간</label>
+                <button type="button" className="btn_tab">편균 최퇴근시간</button>
               </li>
             </ul>
             <ul className="main_tab_body bg-fff padding-x-1em padding-y-2em">

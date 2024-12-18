@@ -5,6 +5,7 @@ import './assets/styles/style.css';
 import './assets/styles/form.css';
 import './assets/styles/font.css';
 import "./assets/styles/comment.css";
+import "./assets/styles/animated.css";
 
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -18,6 +19,7 @@ import BPage from './pages/project/b';
 import ProjectManagement from './pages/management/projectManagement';
 import StatisticsManagement from './pages/management/StatisticsManagement';
 import ProjectView from './pages/project/ProjectView';
+import PasswordFindPage from './pages/auth/PasswordFindPage';
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           {/* Public Routes */}
           <Route path='/WorkVisual/login' element={<LoginPage />} />
           <Route path='/WorkVisual/signin' element={<SigninPage />} />
+          <Route path='/WorkVisual/password-find' element={<PasswordFindPage />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>

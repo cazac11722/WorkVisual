@@ -14,8 +14,12 @@
 
     --font--main--color : #000;
 
+    --error--main--color : rgb(218, 45, 80);
 
-    --margin--left : 10px
+
+    --margin--left : 10px;
+    --margin--top : 10px;
+    
 }
 
 

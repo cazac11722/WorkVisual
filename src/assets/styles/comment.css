@@ -118,6 +118,10 @@
     border-radius: 5px;
 }
 
+.btn_modal {
+    position: relative;
+}
+
 /* 아이콘 sytle */
 
 .icon {
@@ -137,9 +141,90 @@
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     color: #A6A6A6;
+    border: 0;
 }
 
 .main_tab_head .btn_tab.active {
     background-color: #1B3262;
     color: #fff;
+}
+
+
+/* modal style */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 25em;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 1em;
+
+}
+
+.modal-wrap {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100vw;
+    height: 100vh;
+}
+
+
+.modal-header {
+    background-color: var(--bg--main--color);
+    display: flex;
+    line-height: 5em;
+    color: #fff;
+    cursor: move;
+}
+
+.modal-header h3 {
+    padding: 0 1em;
+}
+
+
+.modal-close {
+    margin-left: auto;
+    margin-right: 2em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+input.modal_controller {
+    width: 4em;
+}
+
+.modal-list {
+    height: 30em;
+    overflow-y: scroll;
+}
+
+.modal-list > li{
+    display: flex;
+    line-height: 3em;
+    align-items: center;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+
+.modal-list .modal-checkbox {
+    border-right: 1px solid #DDDDDD;
+}
+
+.modal-list .text {
+    display: flex;
+    align-items: center;
+    padding: 0 1.3em
+}
+
+
+.modal-list .text span {
+    margin-left: 10px;
 }

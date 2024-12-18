@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../../components/Header.js';
 import Sidebar from '../../components/Sidebar.js';
 import IconWidget from '../../components/widget/icon_widget.js';
+import ModalWidget from '../../components/widget/modal_widget.js';
 
 const EmployeeManagement = () => {
     return (
@@ -9,15 +10,19 @@ const EmployeeManagement = () => {
             <Sidebar />
             <div className="row w100">
                 <Header />
+                <ModalWidget />
                 <main>
                     <section className="row padding-3em bg-viwe ">
                         <div className='box-bor'>
                             <div className='flex justify-content-between'>
                                 <h3 className="title">
                                     <IconWidget icon="document" />
-                                    <span className="margin-left-1em">직원 관리</span>
+                                    <span className="margin-left">직원 관리</span>
                                 </h3>
-                                <button>직원 선택</button>
+                                <button type='button' className='btn btn_modal padding-x-2em'>
+                                    <div className='icon'><IconWidget icon="userM" color="#fff" /></div>
+                                    <span className='margin-left size1'>직원 선택</span>
+                                </button>
                             </div>
                             <table className="table-data">
                                 <thead>
@@ -64,10 +69,9 @@ const EmployeeManagement = () => {
                             </ul>
                         </div>
                     </section>
-
-
                 </main>
             </div>
+            
         </div>
     );
 }

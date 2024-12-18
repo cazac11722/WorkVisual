@@ -78,6 +78,31 @@ label.form_controller {
     border-radius: 5px;
     padding: 1em;
     width: 100%;
+    position: relative;
+}
+
+label.form_controller.error {
+    border: 1px solid var(--error--main--color);
+}
+
+
+label.form_controller.error .icon svg {
+    fill: var(--error--main--color);
+}
+
+
+label.form_controller.error input {
+    color: var(--error--main--color);
+}
+
+label.form_controller.error input::placeholder {
+    color: var(--error--main--color);
+}
+
+p.form_error {
+    color: var(--error--main--color);
+    font-size: 0.8rem;
+    white-space: pre-line;
 }
 
 label.form_controller .icon svg {
@@ -96,4 +121,12 @@ input.form_controller {
 input.form_controller:focus {
     border: 0;
     outline: none;
+}
+
+span.form_controller_error {
+    color: red;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 0.9rem;
 }

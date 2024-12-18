@@ -3,25 +3,63 @@ import { Link, useNavigate } from 'react-router-dom';
 import IconWidget from '../../components/widget/icon_widget';
 
 const SigninPage = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [password2, setPassword2] = useState('');
+    const [formData, setFormData] = useState({ username: '', email: '', password: '', password2: '' });
+    const [errors, setErrors] = useState({ username: '', email: '', password: '', password2: '', form: '' });
     const navigate = useNavigate();
 
+    // 입력값 변경 핸들러
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: '', form: '' }); // 입력 시 에러 초기화
+    };
+
+    // 이메일 형식 검증
+    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    // 폼 제출 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password !== password2) {
-            alert('비밀번호가 일치하지 않습니다.');
+        const { username, email, password, password2 } = formData;
+
+        // 유효성 검사
+        let valid = true;
+        const newErrors = { username: '', email: '', password: '', password2: '', form: '' };
+
+        if (!username) {
+            newErrors.username = '이름을 입력해주세요.';
+            valid = false;
+        }
+        if (!email) {
+            newErrors.email = '이메일을 입력해주세요.';
+            valid = false;
+        } else if (!validateEmail(email)) {
+            newErrors.email = '올바른 이메일 형식이 아닙니다.';
+            valid = false;
+        }
+        if (!password) {
+            newErrors.password = '비밀번호를 입력해주세요.';
+            valid = false;
+        }
+        if (!password2) {
+            newErrors.password2 = '비밀번호 확인을 입력해주세요.';
+            valid = false;
+        } else if (password !== password2) {
+            newErrors.password2 = '비밀번호가 일치하지 않습니다.';
+            valid = false;
+        }
+
+        if (!valid) {
+            setErrors(newErrors);
             return;
         }
 
+        // 회원가입 API 요청
         try {
             const response = await fetch('http://localhost:8000/api/accounts/register/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password, password2 }),
-                credentials: 'include',
             });
 
             if (response.ok) {
@@ -29,10 +67,27 @@ const SigninPage = () => {
                 navigate('/WorkVisual/login');
             } else {
                 const data = await response.json();
-                alert(`회원가입 실패: ${JSON.stringify(data)}`);
+
+                // 서버에서 받은 에러 메시지 처리
+                const serverErrors = { username: '', email: '', password: '', password2: '', form: '' };
+
+
+                if (data.password) {
+                    serverErrors.password = data.password.join('\n'); // 비밀번호 에러를 여러 줄로 처리
+                }
+                if (data.email) {
+                    serverErrors.email = data.email.join('\n');
+                }
+                if (data.username) {
+                    serverErrors.username = data.username.join('\n');
+                }
+                
+                serverErrors.form = '회원가입 실패. 입력한 정보를 다시 확인해주세요.';
+                setErrors(serverErrors);
             }
         } catch (error) {
             console.error('Error during signup:', error);
+            setErrors({ ...errors, form: '서버 오류가 발생했습니다. 다시 시도해주세요.' });
         }
     };
 
@@ -41,69 +96,90 @@ const SigninPage = () => {
             <form onSubmit={handleSubmit} className='form padding-x-2em padding-y-4em border w30'>
                 <div className='margin-bottom-4em flex align-items-center justify-content-center'>
                     <div className='icon icon-border'><IconWidget icon="edit" color="#fff" /></div>
-                    <h3 className='margin-left size2em'>회원가입</h3>
+                    <h3 className='margin-left size2'>회원가입</h3>
                 </div>
+
+                {/* 이름 입력 */}
                 <div className='form_group'>
-                    <label className='form_controller' htmlFor='name'>
+                    <label className={`form_controller ${errors.username ? 'error' : ''}`} htmlFor='username'>
                         <div className='icon'><IconWidget icon="user" color="#B7B7B7" /></div>
                         <input
                             type='text'
-                            id='name'
+                            id='username'
+                            name='username'
                             className='form_controller'
                             placeholder='이름을 입력해주세요.'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={formData.username}
+                            onChange={handleChange}
                         />
                     </label>
+                    {errors.username && <p className='form_error'>{errors.username}</p>}
                 </div>
+
+                {/* 이메일 입력 */}
                 <div className='form_group'>
-                    <label className='form_controller' htmlFor='email'>
-                        <div className='icon'><IconWidget icon="email" color="#B7B7B7" /></div>
+                    <label className={`form_controller ${errors.email ? 'error' : ''}`} htmlFor='email'>
+                        <div className='icon'><IconWidget icon="userd" color="#B7B7B7" /></div>
                         <input
                             type='email'
                             id='email'
+                            name='email'
                             className='form_controller'
                             placeholder='이메일을 입력해주세요.'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                     </label>
+                    {errors.email && <p className='form_error'>{errors.email}</p>}
                 </div>
+
+                {/* 비밀번호 입력 */}
                 <div className='form_group'>
-                    <label className='form_controller' htmlFor='password'>
+                    <label className={`form_controller ${errors.password ? 'error' : ''}`} htmlFor='password'>
                         <div className='icon'><IconWidget icon="password" color="#B7B7B7" /></div>
                         <input
                             type='password'
                             id='password'
+                            name='password'
                             className='form_controller'
                             placeholder='비밀번호를 입력해주세요.'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={formData.password}
+                            onChange={handleChange}
                         />
                     </label>
+                    {errors.password && <p className='form_error'>{errors.password}</p>}
                 </div>
+
+                {/* 비밀번호 확인 */}
                 <div className='form_group'>
-                    <label className='form_controller' htmlFor='password2'>
+                    <label className={`form_controller ${errors.password2 ? 'error' : ''}`} htmlFor='password2'>
                         <div className='icon'><IconWidget icon="password" color="#B7B7B7" /></div>
                         <input
                             type='password'
                             id='password2'
+                            name='password2'
                             className='form_controller'
                             placeholder='비밀번호 확인'
-                            value={password2}
-                            onChange={(e) => setPassword2(e.target.value)}
+                            value={formData.password2}
+                            onChange={handleChange}
                         />
                     </label>
+                    {errors.password2 && <p className='form_error'>{errors.password2}</p>}
                 </div>
+
+                {/* 전체 에러 메시지 */}
+                {errors.form && <p className='form_error margin-bottom-2em'>{errors.form}</p>}
+
+                {/* 가입하기 버튼 */}
                 <div className='margin-bottom-2em'>
                     <button type='submit' className='btn w100'>
                         <div className='icon'><IconWidget icon="editS" color="#fff" /></div>
-                        <span className='size1em margin-left'>가입하기</span>
+                        <span className='size1 margin-left'>가입하기</span>
                     </button>
                 </div>
-                <div className='from_group flex align-items-center justify-content-center'>
-                    <Link to="/WorkVisual/password-find">비밀번호 찾기</Link>
-                    <span className='padding-x-1em'>|</span>
+
+                {/* 로그인 링크 */}
+                <div className='form_group flex align-items-center justify-content-center'>
                     <Link to="/WorkVisual/login">로그인 하기</Link>
                 </div>
             </form>

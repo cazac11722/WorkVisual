@@ -5,6 +5,7 @@ import IconWidget from './icon_widget';
 const MenuSubLink = (props) => {
 
     const menuArr = props.MenuData ? props.MenuData : [];
+
     const [isActive, setIsActive] = useState(false); // 상태로 `nav_sub`의 활성 상태 관리
 
     const toggleActive = () => {
@@ -26,7 +27,7 @@ const MenuSubLink = (props) => {
                 {
                     menuArr.map((e, idx) => (
                         (
-                            <li>
+                            <li key={idx}>
                                 <Link to={e.href}>{e.name}</Link>
                             </li>
                         )))
