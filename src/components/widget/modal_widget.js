@@ -2,13 +2,14 @@ import React from 'react';
 import IconWidget from './icon_widget';
 
 const ModalWidget = (props) => {
-    // let active = props.hidden && props.hidden === true ? false : true;
     return (
-        <div className="modal" >
+        <div className="modal" hidden={props.hidden}>
             <div className='modal-header'>
                 <label htmlFor='all' className='modal-checkbox'><input type='checkbox' id='all' className='modal_controller' /></label>
                 <h3>팀원 리스트</h3>
-                <div className='modal-close' ><IconWidget icon="close" color="#fff" /></div>
+                <div className='modal-close' onClick={() => {
+                    props.event(true);
+                }} ><IconWidget icon="close" color="#fff" /></div>
             </div>
             <div className='modal-contents'>
                 <ul className='modal-list'>

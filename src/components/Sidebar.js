@@ -12,8 +12,8 @@ const Sidebar = () => {
   const isActive = (path) => location.pathname === path;
 
   const AdminDataTest = [
-    {"name" : "a", "href" : "/a"},
-    {"name" : "b", "href" : "/b"},
+    {"name" : "a", "href" : "/WorkVisual/a"},
+    {"name" : "b", "href" : "/WorkVisual/b"},
   ]
 
   const AdminData = [
