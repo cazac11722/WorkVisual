@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
-import '../../styles/a.css';
+import '../../assets/styles/a.css';
 
 const APage = () => {
   return (
