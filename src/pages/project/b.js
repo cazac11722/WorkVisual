@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
 import "../../assets/styles/b.css";
 
 const BPage = () => {
+    let [item2, addclass] = useState(1);
+
+
     return (
         <div className='wrap_inner border-top--main flex'>
             <Sidebar />
@@ -23,12 +26,12 @@ const BPage = () => {
                     {/* <hr className='hr'></hr> */}
                     <div className='Row P10'>
                         <ul className='menu'>
-                            <li className='send'>보내기</li>
-                            <li>예약</li>
-                            <li>임시저장</li>
-                            <li>미리보기</li>
-                            <li>템플릿</li>
-                            <li>내게쓰기</li>
+                            <li className={item2 == 1 ? "send" : ""} onClick={()=>{addclass(1)}} >보내기</li>
+                            <li className={item2 == 2 ? "send" : ""} onClick={()=>{addclass(2)}} >예약</li>
+                            <li className={item2 == 3 ? "send" : ""} onClick={()=>{addclass(3)}} >임시저장</li>
+                            <li className={item2 == 4 ? "send" : ""} onClick={()=>{addclass(4)}} >미리보기</li>
+                            <li className={item2 == 5 ? "send" : ""} onClick={()=>{addclass(5)}} >템플릿</li>
+                            <li className={item2 == 6 ? "send" : ""} onClick={()=>{addclass(6)}} >내게쓰기</li>
                         </ul>
                         <ul className='icon F_right'>
                             <li>icon1</li>
