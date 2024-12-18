@@ -350,3 +350,12 @@
 .text-align-center {
     text-align: center;
 }
+
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}

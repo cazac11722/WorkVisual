@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/Header.js';
 import Sidebar from '../../components/Sidebar.js';
 import IconWidget from '../../components/widget/icon_widget.js';
 import ModalWidget from '../../components/widget/modal_widget.js';
 
 const EmployeeManagement = () => {
+
     return (
         <div className='wrap_inner border-top--main flex'>
             <Sidebar />
             <div className="row w100">
                 <Header />
-                <ModalWidget />
+                <ModalWidget/>
                 <main>
                     <section className="row padding-3em bg-viwe ">
                         <div className='box-bor'>
@@ -19,7 +20,7 @@ const EmployeeManagement = () => {
                                     <IconWidget icon="document" />
                                     <span className="margin-left">직원 관리</span>
                                 </h3>
-                                <button type='button' className='btn btn_modal padding-x-2em'>
+                                <button type='button' className='btn btn_modal padding-x-2em' >
                                     <div className='icon'><IconWidget icon="userM" color="#fff" /></div>
                                     <span className='margin-left size1'>직원 선택</span>
                                 </button>

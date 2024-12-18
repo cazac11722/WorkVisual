@@ -31,12 +31,11 @@ function App() {
           <Route path='/WorkVisual/signin' element={<SigninPage />} />
           <Route path='/WorkVisual/password-find' element={<PasswordFindPage />} />
 
-          <Route path='/WorkVisual/' element={<Dashboard />} />
-          <Route path='/WorkVisual/a' element={<APage />} />
-          <Route path='/WorkVisual/b' element={<BPage />} />
-
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
+            <Route path='/WorkVisual/' element={<Dashboard />} />
+            <Route path='/WorkVisual/a' element={<APage />} />
+            <Route path='/WorkVisual/b' element={<BPage />} />
             <Route path='/WorkVisual/project/:id' element={<ProjectView />} />
             <Route path='/WorkVisual/employee-management' element={<EmployeeManagement />} />
             <Route path='/WorkVisual/project-management' element={<ProjectManagement />} />
