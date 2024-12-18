@@ -48,7 +48,7 @@ const LoginPage = () => {
 
         // 로그인 요청
         try {
-            const response = await fetch('http://localhost:8000/api/accounts/login/', {
+            const response = await fetch('https://cazac11722.pythonanywhere.com/api/accounts/login/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),

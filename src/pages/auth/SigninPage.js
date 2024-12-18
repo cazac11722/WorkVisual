@@ -56,7 +56,7 @@ const SigninPage = () => {
 
         // 회원가입 API 요청
         try {
-            const response = await fetch('http://localhost:8000/api/accounts/register/', {
+            const response = await fetch('https://cazac11722.pythonanywhere.com/api/accounts/register/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password, password2 }),
