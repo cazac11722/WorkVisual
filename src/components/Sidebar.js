@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Menulink from "./widget/menu_link_widget.js";
 import MenuSubLink from './widget/menu_sub_link_widget.js';
 
@@ -24,7 +24,9 @@ const Sidebar = () => {
 
   return (
     <div className="row w300px bg-main padding-to-5em">
-      <button type="button" className="bg-sub btn"><span className="text_href margin-right-1em">새 프로젝트 추가</span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" /></svg></button>
+      <Link to="/WorkVisual/project-create" className="bg-sub btn">
+        <button type="button" className="bg-sub btn"><span className="text_href margin-right-1em">새 업무 추가</span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" /></svg></button>
+      </Link>
       <nav className="row padding-y-2em">
         <ul>
           <Menulink MenuIcon="Dashboard" MenuActvie={isActive('/WorkVisual/') ? true : false} MenuName="대시보기" MenuHref="/WorkVisual/" />

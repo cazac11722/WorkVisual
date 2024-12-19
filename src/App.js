@@ -21,6 +21,7 @@ import BusinessSettings from './pages/management/BusinessSettings';
 import StatisticsManagement from './pages/management/StatisticsManagement';
 import ProjectView from './pages/project/ProjectView';
 import PasswordFindPage from './pages/auth/PasswordFindPage';
+import ProjectCreate from './pages/project/ProjectCreate';
 
 function App() {
   return (
@@ -39,7 +40,9 @@ function App() {
             <Route path='/WorkVisual/a' element={<APage />} />
             <Route path='/WorkVisual/b' element={<BPage />} />
 
+            <Route path='/WorkVisual/project-create' element={<ProjectCreate />} />
             <Route path='/WorkVisual/project/:id' element={<ProjectView />} />
+
             <Route path='/WorkVisual/employee-management' element={<EmployeeManagement />} />
             <Route path='/WorkVisual/project-management' element={<ProjectManagement />} />
             <Route path='/WorkVisual/business-settings' element={<BusinessSettings />} />

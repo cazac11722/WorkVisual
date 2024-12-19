@@ -56,7 +56,7 @@ const LoginPage = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                login(data.token, { username });
+                login(data.token, { username, "id" : data.user_id });
                 navigate('/WorkVisual/'); // 로그인 성공 후 리다이렉트
             } else {
                 setErrors({ ...errors, form: '로그인 실패: 아이디 또는 비밀번호를 확인해주세요.' });
