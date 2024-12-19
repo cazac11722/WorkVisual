@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/WorkVisual/static/css/main.43e47502.css",
-    "main.js": "/WorkVisual/static/js/main.85a94c68.js",
+    "main.js": "/WorkVisual/static/js/main.0832bccd.js",
     "static/js/488.9c92ff38.chunk.js": "/WorkVisual/static/js/488.9c92ff38.chunk.js",
     "index.html": "/WorkVisual/index.html",
     "main.43e47502.css.map": "/WorkVisual/static/css/main.43e47502.css.map",
-    "main.85a94c68.js.map": "/WorkVisual/static/js/main.85a94c68.js.map",
+    "main.0832bccd.js.map": "/WorkVisual/static/js/main.0832bccd.js.map",
     "488.9c92ff38.chunk.js.map": "/WorkVisual/static/js/488.9c92ff38.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.43e47502.css",
-    "static/js/main.85a94c68.js"
+    "static/js/main.0832bccd.js"
   ]
 }
