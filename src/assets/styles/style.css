@@ -275,6 +275,10 @@
     padding-right: 3em;
 }
 
+.padding-none {
+    padding: 0 !important;
+}
+
 /* margin style */
 
 .margin-left {

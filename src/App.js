@@ -13,10 +13,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/auth/LoginPage';
 import SigninPage from './pages/auth/SigninPage';
 import Dashboard from './pages/home/Dashboard';
-import EmployeeManagement from './pages/management/EmployeeManagement';
 import APage from './pages/project/a';
 import BPage from './pages/project/b';
-import ProjectManagement from './pages/management/projectManagement';
+import EmployeeManagement from './pages/management/EmployeeManagement';
+import ProjectManagement from './pages/management/ProjectManagement';
+import BusinessSettings from './pages/management/BusinessSettings';
 import StatisticsManagement from './pages/management/StatisticsManagement';
 import ProjectView from './pages/project/ProjectView';
 import PasswordFindPage from './pages/auth/PasswordFindPage';
@@ -33,13 +34,17 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
+
             <Route path='/WorkVisual/' element={<Dashboard />} />
             <Route path='/WorkVisual/a' element={<APage />} />
             <Route path='/WorkVisual/b' element={<BPage />} />
+
             <Route path='/WorkVisual/project/:id' element={<ProjectView />} />
             <Route path='/WorkVisual/employee-management' element={<EmployeeManagement />} />
             <Route path='/WorkVisual/project-management' element={<ProjectManagement />} />
+            <Route path='/WorkVisual/business-settings' element={<BusinessSettings />} />
             <Route path='/WorkVisual/statistics-management' element={<StatisticsManagement />} />
+            
           </Route>
 
           {/* 404 Page (Optional) */}

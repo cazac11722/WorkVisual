@@ -69,12 +69,10 @@
     align-items: center;
 }
 
-.project-view__reply {
-
-}
+.project-view__reply {}
 
 
-.project-view__reply > li {
+.project-view__reply>li {
     padding: 0 1em;
     border-left: 3px solid var(--bg--main--color);
     margin-top: 2em;
@@ -91,7 +89,7 @@
 }
 
 .employee-view {
-    background-color: #fff;   
+    background-color: #fff;
     padding: 2em;
     border-radius: 10px;
     height: 100vh;
@@ -100,7 +98,7 @@
 
 .box-bor {
     background-color: #fff;
-    box-shadow: 1px 1px 10px rgba(0,0,0,0.12);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.12);
     border-radius: 1em;
     padding: 2em;
 }
@@ -121,6 +119,34 @@
 .btn_modal {
     position: relative;
 }
+
+.btn-trigger {
+    color: #526484;
+    fill: #526484;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-trigger svg {
+    color: #526484;
+    fill: #526484;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-icon {
+    background-color: transparent;
+    height: auto;
+    border-radius: 100%;
+    transition: 0.5s all;
+    height: 3em;
+    width: 3em;
+}
+
+.btn-icon.btn-trigger:hover {
+    background-color: #e5e9f2;
+}
+
 
 /* 아이콘 sytle */
 
@@ -206,7 +232,7 @@ input.modal_controller {
     overflow-y: scroll;
 }
 
-.modal-list > li{
+.modal-list>li {
     display: flex;
     line-height: 3em;
     align-items: center;
@@ -227,4 +253,255 @@ input.modal_controller {
 
 .modal-list .text span {
     margin-left: 10px;
+}
+
+
+.nk-ibx-aside {
+    align-items: stretch;
+    border-right: 1px solid #e5e9f2;
+    flex-direction: column;
+    transition: transform .4s linear;
+    width: 260px;
+    z-index: 99;
+}
+
+.nk-ibx-head {
+    align-items: center;
+    border-bottom: 1px solid #e5e9f2;
+    display: flex;
+    justify-content: space-between;
+    min-height: 65px;
+    padding: .75rem 1.25rem;
+    position: relative;
+}
+
+.nk-ibx-nav {
+    flex-grow: 1;
+    height: 100%;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.simplebar-wrapper {
+    height: inherit;
+    max-height: inherit;
+    max-width: inherit;
+    overflow: hidden;
+    width: inherit;
+}
+
+.nk-ibx-menu li {
+    align-items: center;
+    border-radius: 4px;
+    display: flex;
+    padding: .5rem .75rem;
+    cursor: pointer;
+    justify-content: space-between;
+    margin: .5rem 0;
+}
+
+.nk-ibx-menu li.active {
+    background: #eff1ff;
+    border-radius: 3px;
+}
+
+.nk-ibx-menu li.active .badge {
+    background: #6576ff;
+    color: #fff;
+}
+
+.nk-ibx-menu-text {
+    color: #526484;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.nk-ibx-menu-item .badge {
+    justify-content: center;
+    margin-left: auto;
+    min-width: 2.25rem;
+}
+
+.badge.bg-light {
+    color: #364a63;
+}
+
+.badge.rounded-pill {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.bg-light {
+    border-color: #e5e9f2;
+}
+
+.badge {
+    font-size: .675rem;
+    letter-spacing: .01em;
+    line-height: 1.5rem;
+    vertical-align: middle;
+    background-color: #e5e9f2;
+    border-radius: 50px;
+}
+
+.nk-ibx-body {
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.nk-ibx-head {
+    align-items: center;
+    border-bottom: 1px solid #e5e9f2;
+    display: flex;
+    justify-content: space-between;
+    min-height: 65px;
+    padding: .75rem 1.25rem;
+}
+
+.nk-ibx-head-actions,
+.nk-ibx-head-tools {
+    align-items: center;
+    display: flex;
+}
+
+.nk-ibx-item {
+    align-items: center;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    padding: 1rem 1.25rem;
+    position: relative;
+    transition: background-color .3s;
+}
+
+.nk-ibx-item:last-child {
+    border-bottom: 1px solid #e5e9f2;
+}
+
+.user-card {
+    align-items: center;
+    display: flex;
+}
+
+.nk-ibx-item-elem {
+    flex-shrink: 0;
+    padding: 0 8px;
+}
+
+.nk-ibx-item-user {
+    width: 200px;
+}
+
+.nk-ibx-item-fluid {
+    flex-grow: 1;
+    flex-shrink: 1;
+    max-width: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+.nk-ibx-item-time {
+    text-align: right;
+    width: 80px;
+}
+
+.sub-text {
+    color: #8094ae;
+    display: block;
+    font-size: 13px;
+}
+
+.nk-ibx-item-tools {
+    margin-left: auto;
+    padding-right: 0;
+    text-align: right;
+    position: relative;
+}
+
+.ibx-actions {
+    display: inline-block;
+    position: relative;
+    transition: background-color .3s;
+}
+
+.user-avatar,
+[class^=user-avatar]:not([class*=-group]) {
+    align-items: center;
+    background: #798bff;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    justify-content: center;
+    letter-spacing: .06em;
+    position: relative;
+    width: 40px;
+}
+
+.user-avatar+.user-name,
+[class^=user-avatar]:not([class*=-group])+.user-name {
+    margin-left: .75rem;
+}
+
+.nk-ibx-item-user .user-name {
+    max-width: calc(100% - 50px);
+}
+
+.user-name {
+    color: #526484;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+}
+
+.nk-ibx-context-group {
+    align-items: center;
+    display: flex;
+}
+
+.nk-ibx-context-badges {
+    margin-right: .75rem;
+}
+
+.bg-primary {
+    background-color: #6576ff;
+}
+
+
+.badge {
+    border: 0;
+    display: inline-flex;
+    font-family: Roboto, sans-serif;
+    font-size: .675rem;
+    letter-spacing: .01em;
+    line-height: 1.125rem;
+    position: relative;
+    vertical-align: middle;
+    padding: 0 1em;
+    color: #fff;
+}
+
+.nk-ibx-head-check {
+    padding: 0 8px;
+}
+
+.nk-ibx-item:hover {
+    background: #f5f6fa99;
+}
+
+.nk-ibx-context {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nk-ibx-context-text {
+    color: #8094ae;
+    display: inline;
 }

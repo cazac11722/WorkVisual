@@ -63,10 +63,10 @@ const EmployeeManagement = () => {
             <Sidebar />
             <div className="row w100">
                 <Header />
-                <ModalWidget hidden={modalHidden} event={setModalHidden} loading={loading} users={allUsers} />
+                <ModalWidget hidden={modalHidden} event={setModalHidden} loading={loading} users={allUsers} setUsers={setAllUsers} />
                 <main>
                     <section className="row padding-3em bg-viwe">
-                        <div className='box-bor'>
+                        <div className='box-bor '>
                             <div className='flex justify-content-between'>
                                 <h3 className="title">
                                     <IconWidget icon="document" />

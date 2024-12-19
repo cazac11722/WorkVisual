@@ -26,12 +26,12 @@ const BPage = () => {
                     {/* <hr className='hr'></hr> */}
                     <div className='Row P10'>
                         <ul className='menu'>
-                            <li className={item2 == 1 ? "send" : ""} onClick={()=>{addclass(1)}} >보내기</li>
-                            <li className={item2 == 2 ? "send" : ""} onClick={()=>{addclass(2)}} >예약</li>
-                            <li className={item2 == 3 ? "send" : ""} onClick={()=>{addclass(3)}} >임시저장</li>
-                            <li className={item2 == 4 ? "send" : ""} onClick={()=>{addclass(4)}} >미리보기</li>
-                            <li className={item2 == 5 ? "send" : ""} onClick={()=>{addclass(5)}} >템플릿</li>
-                            <li className={item2 == 6 ? "send" : ""} onClick={()=>{addclass(6)}} >내게쓰기</li>
+                            <li className={item2 === 1 ? "send" : ""} onClick={()=>{addclass(1)}} >보내기</li>
+                            <li className={item2 === 2 ? "send" : ""} onClick={()=>{addclass(2)}} >예약</li>
+                            <li className={item2 === 3 ? "send" : ""} onClick={()=>{addclass(3)}} >임시저장</li>
+                            <li className={item2 === 4 ? "send" : ""} onClick={()=>{addclass(4)}} >미리보기</li>
+                            <li className={item2 === 5 ? "send" : ""} onClick={()=>{addclass(5)}} >템플릿</li>
+                            <li className={item2 === 6 ? "send" : ""} onClick={()=>{addclass(6)}} >내게쓰기</li>
                         </ul>
                         <ul className='icon F_right'>
                             <li>icon1</li>
