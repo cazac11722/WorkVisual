@@ -30,7 +30,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path='/WorkVisual/login' element={<LoginPage />} />
-          <Route path='/WorkVisual/#/signin' element={<SigninPage />} />
+          <Route path='/WorkVisual/signin' element={<SigninPage />} />
           <Route path='/WorkVisual/password-find' element={<PasswordFindPage />} />
 
           {/* Protected Routes */}
