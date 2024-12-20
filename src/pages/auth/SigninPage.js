@@ -172,7 +172,7 @@ const SigninPage = () => {
 
                 {/* 가입하기 버튼 */}
                 <div className='margin-bottom-2em'>
-                    <button type='submit' className='btn w100'>
+                    <button type='submit' className='btn w100 h4em'>
                         <div className='icon'><IconWidget icon="editS" color="#fff" /></div>
                         <span className='size1 margin-left'>가입하기</span>
                     </button>

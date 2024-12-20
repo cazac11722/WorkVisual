@@ -13,8 +13,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/auth/LoginPage';
 import SigninPage from './pages/auth/SigninPage';
 import Dashboard from './pages/home/Dashboard';
-import APage from './pages/project/a';
-import BPage from './pages/project/b';
 import EmployeeManagement from './pages/management/EmployeeManagement';
 import ProjectManagement from './pages/management/ProjectManagement';
 import BusinessSettings from './pages/management/BusinessSettings';
@@ -37,8 +35,6 @@ function App() {
           <Route element={<ProtectedRoute />}>
 
             <Route path='/WorkVisual/' element={<Dashboard />} />
-            <Route path='/WorkVisual/a' element={<APage />} />
-            <Route path='/WorkVisual/b' element={<BPage />} />
 
             <Route path='/WorkVisual/project-create' element={<ProjectCreate />} />
             <Route path='/WorkVisual/project/:id' element={<ProjectView />} />

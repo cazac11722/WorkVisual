@@ -25,13 +25,12 @@ const TaskTable = ({ data, columns, setData }) => {
     const renderCell = (cell) => {
         const { column, row, value } = cell;
 
-        if (column.id === "id" ) {
-            return <div style={{width: "50px"}}>{row.index + 1  }</div>;
+        if (column.id === "id") {
+            return <div style={{ width: "50px" }}>{row.index + 1}</div>;
         }
 
         if (column.id === "startTime" || column.id === "endTime") {
-            let ary = cell.getValue().split(' ')
-            return <>{ary[4]}</>;
+            return <>{cell.getValue()}</>;
         }
 
         if (column.id === "workDetails") {
@@ -42,7 +41,7 @@ const TaskTable = ({ data, columns, setData }) => {
                     onBlur={(e) => handleEdit(row.index, column.id, e.target.textContent)}
                     style={{
                         whiteSpace: "pre-wrap", // 여러 공백 및 줄바꿈 유지
-                        width : "300px",
+                        width: "300px",
                     }}
                     dangerouslySetInnerHTML={{ __html: cell.getValue() }}
                 />
@@ -72,9 +71,13 @@ const TaskTable = ({ data, columns, setData }) => {
                     onClick={() => {
                         const updatedData = [...data];
                         if (isStarted) {
-                            updatedData[rowIndex].endTime = new Date().toLocaleString(); // 종료 시간 설정
+                            // 종료 시간 설정
+                            updatedData[rowIndex].endTime = new Date()
+                                .toLocaleTimeString("en-GB", { hour12: false, timeZone: "Asia/Seoul" }); // hh:mm[:ss[.uuuuuu]]
                         } else {
-                            updatedData[rowIndex].startTime = new Date().toLocaleString(); // 시작 시간 설정
+                            // 시작 시간 설정
+                            updatedData[rowIndex].startTime = new Date()
+                                .toLocaleTimeString("en-GB", { hour12: false, timeZone: "Asia/Seoul" }); // hh:mm[:ss[.uuuuuu]]
                         }
                         setData(updatedData);
                     }}
@@ -83,7 +86,7 @@ const TaskTable = ({ data, columns, setData }) => {
                 </button>
             );
         }
-        
+
         return (
             <div
                 contentEditable
@@ -105,7 +108,7 @@ const TaskTable = ({ data, columns, setData }) => {
         setData(updatedData);
     };
 
-    
+
     return (
         <div className="task-table-container margin-top">
             <table className="task-table" ref={tableRef}>

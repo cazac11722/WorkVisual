@@ -146,6 +146,22 @@
     height: 100%;
 }
 
+.h1em {
+    height: 1em;
+}
+
+.h2em {
+    height: 2em;
+}
+
+.h3em {
+    height: 3em;
+}
+
+.h4em {
+    height: 4em;
+}
+
 .h10em {
     height: 10em;
 }
@@ -293,6 +309,15 @@
     margin-right:.7em;
 }
 
+.margin-x-1em {
+    margin-left:1em;
+    margin-right:1em;
+}
+
+.margin-x-2em {
+    margin-left:2em;
+    margin-right:2em;
+}
 
 .margin-auto {
     margin: 0 auto;

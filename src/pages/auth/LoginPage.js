@@ -114,7 +114,7 @@ const LoginPage = () => {
 
                 {/* 로그인 버튼 */}
                 <div className='margin-bottom-2em'>
-                    <button type='submit' className='btn w100'>
+                    <button type='submit' className='btn w100 h4em'>
                         <div className='icon'><IconWidget icon="login" color="#fff" /></div>
                         <span className='size1 margin-left'>로그인</span>
                     </button>
