@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.7b1623dd.css",
-    "main.js": "/static/js/main.3b3f7942.js",
-    "static/js/488.dcb5c261.chunk.js": "/static/js/488.dcb5c261.chunk.js",
-    "index.html": "/index.html",
-    "main.7b1623dd.css.map": "/static/css/main.7b1623dd.css.map",
-    "main.3b3f7942.js.map": "/static/js/main.3b3f7942.js.map",
-    "488.dcb5c261.chunk.js.map": "/static/js/488.dcb5c261.chunk.js.map"
+    "main.css": "/WorkVisual/static/css/main.7b1623dd.css",
+    "main.js": "/WorkVisual/static/js/main.f570bd7b.js",
+    "static/js/488.dcb5c261.chunk.js": "/WorkVisual/static/js/488.dcb5c261.chunk.js",
+    "index.html": "/WorkVisual/index.html",
+    "main.7b1623dd.css.map": "/WorkVisual/static/css/main.7b1623dd.css.map",
+    "main.f570bd7b.js.map": "/WorkVisual/static/js/main.f570bd7b.js.map",
+    "488.dcb5c261.chunk.js.map": "/WorkVisual/static/js/488.dcb5c261.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7b1623dd.css",
-    "static/js/main.3b3f7942.js"
+    "static/js/main.f570bd7b.js"
   ]
 }
