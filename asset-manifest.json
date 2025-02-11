@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/WorkVisual/static/css/main.80ecf861.css",
-    "main.js": "/WorkVisual/static/js/main.d96d717d.js",
+    "main.css": "/WorkVisual/static/css/main.53197797.css",
+    "main.js": "/WorkVisual/static/js/main.6d2e4219.js",
     "index.html": "/WorkVisual/index.html",
     "static/media/Pdf.svg": "/WorkVisual/static/media/Pdf.3518fc0b49c8853a3435a169d3e51a38.svg",
     "static/media/Print.svg": "/WorkVisual/static/media/Print.5872c140447b3d200097f6102bef0a18.svg",
@@ -18,11 +18,11 @@
     "static/media/Add.svg": "/WorkVisual/static/media/Add.db8059549b1bd98b424237d048d5e7c3.svg",
     "static/media/ArrowDown.svg": "/WorkVisual/static/media/ArrowDown.1faa601f7cf69f0226d813daa3232e33.svg",
     "static/media/check.svg": "/WorkVisual/static/media/check.14ef6b5f03f1276e855936235c6b5d58.svg",
-    "main.80ecf861.css.map": "/WorkVisual/static/css/main.80ecf861.css.map",
-    "main.d96d717d.js.map": "/WorkVisual/static/js/main.d96d717d.js.map"
+    "main.53197797.css.map": "/WorkVisual/static/css/main.53197797.css.map",
+    "main.6d2e4219.js.map": "/WorkVisual/static/js/main.6d2e4219.js.map"
   },
   "entrypoints": [
-    "static/css/main.80ecf861.css",
-    "static/js/main.d96d717d.js"
+    "static/css/main.53197797.css",
+    "static/js/main.6d2e4219.js"
   ]
 }
