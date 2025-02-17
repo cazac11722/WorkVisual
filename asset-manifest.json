@@ -1,14 +1,22 @@
 {
   "files": {
-    "main.css": "/WorkVisual/static/css/main.53197797.css",
-    "main.js": "/WorkVisual/static/js/main.6d2e4219.js",
+    "main.css": "/WorkVisual/static/css/main.ed07941a.css",
+    "main.js": "/WorkVisual/static/js/main.d775ddfd.js",
     "index.html": "/WorkVisual/index.html",
+    "static/media/Settings.svg": "/WorkVisual/static/media/Settings.4f46b93969c652931a7721b19e66cdd0.svg",
     "static/media/Pdf.svg": "/WorkVisual/static/media/Pdf.3518fc0b49c8853a3435a169d3e51a38.svg",
+    "static/media/schedule.svg": "/WorkVisual/static/media/schedule.d18ba9af16b7cfced1107c2ec777c350.svg",
     "static/media/Print.svg": "/WorkVisual/static/media/Print.5872c140447b3d200097f6102bef0a18.svg",
     "static/media/moreVert.svg": "/WorkVisual/static/media/moreVert.49a146b32edf98fb831db39992d45a83.svg",
     "static/media/FactCheck.svg": "/WorkVisual/static/media/FactCheck.38572fbccdc664bf4cc4c0ea8db67881.svg",
     "static/media/Save.svg": "/WorkVisual/static/media/Save.5b722d5e4e002699bc289914182100e1.svg",
+    "static/media/Isow.svg": "/WorkVisual/static/media/Isow.acda83be92ed13118a5b20f6af4ae646.svg",
     "static/media/search.svg": "/WorkVisual/static/media/search.1db8eb82c463eaca77ae4928ae5f3fc8.svg",
+    "static/media/Dashboard.svg": "/WorkVisual/static/media/Dashboard.d94e98441e5c31a2080a227c4fc297ef.svg",
+    "static/media/ArrowUpSo.svg": "/WorkVisual/static/media/ArrowUpSo.6b8b9c2a78d9dfc4b1bf2a3fac24fe90.svg",
+    "static/media/Chat.svg": "/WorkVisual/static/media/Chat.6af13e46ed9fae10a138f85cc55e61ab.svg",
+    "static/media/Description.svg": "/WorkVisual/static/media/Description.4651f8838ce9689a7404dd528537b5e4.svg",
+    "static/media/Monitoring.svg": "/WorkVisual/static/media/Monitoring.809c3fb1766acab0606a02300c9c5bd5.svg",
     "static/media/Delete.svg": "/WorkVisual/static/media/Delete.5bfaca79cb0cea931db86a25db7daeda.svg",
     "static/media/Download.svg": "/WorkVisual/static/media/Download.d42bec47d776016370ef238eabf7fee8.svg",
     "static/media/SwapVert.svg": "/WorkVisual/static/media/SwapVert.5bc6b250999681aca3708b8c16a3d587.svg",
@@ -17,12 +25,14 @@
     "static/media/ArrowBack.svg": "/WorkVisual/static/media/ArrowBack.d6d3143265cf42b7fc6f0367fe75dacc.svg",
     "static/media/Add.svg": "/WorkVisual/static/media/Add.db8059549b1bd98b424237d048d5e7c3.svg",
     "static/media/ArrowDown.svg": "/WorkVisual/static/media/ArrowDown.1faa601f7cf69f0226d813daa3232e33.svg",
+    "static/media/ChevronLeft.svg": "/WorkVisual/static/media/ChevronLeft.c8791cd3448d83fe72c5707370434a9f.svg",
+    "static/media/ChevronRight.svg": "/WorkVisual/static/media/ChevronRight.5248d16806a8a574dede33b460847cd9.svg",
     "static/media/check.svg": "/WorkVisual/static/media/check.14ef6b5f03f1276e855936235c6b5d58.svg",
-    "main.53197797.css.map": "/WorkVisual/static/css/main.53197797.css.map",
-    "main.6d2e4219.js.map": "/WorkVisual/static/js/main.6d2e4219.js.map"
+    "main.ed07941a.css.map": "/WorkVisual/static/css/main.ed07941a.css.map",
+    "main.d775ddfd.js.map": "/WorkVisual/static/js/main.d775ddfd.js.map"
   },
   "entrypoints": [
-    "static/css/main.53197797.css",
-    "static/js/main.6d2e4219.js"
+    "static/css/main.ed07941a.css",
+    "static/js/main.d775ddfd.js"
   ]
 }
