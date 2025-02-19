@@ -10,7 +10,7 @@ export const useTheme = () => {
     useEffect(() => {
         if (isDarkMode) {
             document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
+            localStorage.setItem("theme", "light");
         } else {
             document.documentElement.classList.remove("dark");
             localStorage.setItem("theme", "light");

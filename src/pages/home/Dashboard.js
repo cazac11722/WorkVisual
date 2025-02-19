@@ -1,247 +1,239 @@
-import React, { useState } from "react";
-import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
-import { utils, writeFile } from "xlsx";
+import React from "react";
+
 import Header from '../../components/PageLayout/Header';
 import Sidebar from '../../components/PageLayout/Sideber';
 import Footer from '../../components/PageLayout/Footer';
-import { v4 as uuidv4 } from 'uuid';
+
+import IconWidget from "../../components/Widget/icon_widget";
+import SubHeader from "../../components/Body/SubHeader";
+import MainChart from "./components/MainChart";
+import SubChart from "./components/SubChart";
+import { Link } from "react-router-dom";
+import { useSidebar } from "../../contexts/hooks/useSidebar";
 
 const Dashboard = () => {
-  const [data, setData] = useState([]);
-  const [selectedRows, setSelectedRows] = useState({}); // 선택된 행 저장
-
-
-  // 업무 추가 함수
-  const addWorkLog = () => {
-    const newRow = {
-      id: uuidv4(),
-      date: new Date().toISOString().slice(0, 10),
-      startTime: null,
-      endTime: null,
-      detailedWorkTime: 0,
-      worker: "",
-      workId: uuidv4().slice(0, 5),
-      workResult: "",
-      taskDescription: "",
-    };
-
-    setData((prevData) => [...prevData, newRow]);
-    setSelectedRows((prev) => ({ ...prev, [newRow.id]: false })); // 새로운 행은 체크되지 않음
-  };
-
-  // 특정 필드 수정 함수
-  const handleEdit = (rowIndex, columnId, value) => {
-    setData((prevData) =>
-      prevData.map((row, index) =>
-        index === rowIndex ? { ...row, [columnId]: value } : row
-      )
-    );
-  };
-
-  // 시작 버튼 클릭 시
-  const handleStart = (rowId) => {
-    setData((prevData) =>
-      prevData.map((row) =>
-        row.id === rowId ? { ...row, startTime: new Date().toLocaleTimeString(), endTime: null } : row
-      )
-    );
-  };
-
-  // 종료 버튼 클릭 시
-  const handleEnd = (rowId) => {
-    setData((prevData) =>
-      prevData.map((row) => {
-        if (row.id === rowId) {
-          const formatDt = row.startTime.replace(/[가-핳]/g, '') //  HH:mm 으로 변환
-          const startTime = row.startTime ? new Date(`1970-01-01 ${formatDt}`) : null;
-          if (!startTime) return row;
-          const endTime = new Date();
-
-          const workDuration = (endTime - startTime) / (1000 * 60); // 분 단위
-          console.log(formatDt);
-          return {
-            ...row,
-            endTime: endTime.toLocaleTimeString(),
-            detailedWorkTime: workDuration.toFixed(2) + "분",
-          };
-        }
-        return row;
-      })
-    );
-  };
-
-  // 체크박스 개별 선택
-  const toggleRowSelection = (rowId) => {
-    setSelectedRows((prev) => ({
-      ...prev,
-      [rowId]: !prev[rowId],
-    }));
-  };
-
-  // 전체 선택/해제
-  const toggleAllRowsSelection = () => {
-    const allSelected = Object.values(selectedRows).every(Boolean);
-    const newSelection = {};
-    data.forEach((row) => {
-      newSelection[row.id] = !allSelected;
-    });
-    setSelectedRows(newSelection);
-  };
-
-  const columns = [
-    {
-      accessorKey: "select",
-      header: (
-        <input
-          type="checkbox"
-          checked={Object.values(selectedRows).every(Boolean) && data.length > 0}
-          onChange={toggleAllRowsSelection}
-          className="w-4 h-4"
-        />
-      ),
-      cell: ({ row }) =>
-      row ? (
-        <input
-          type="checkbox"
-          checked={!!selectedRows[row.id]}
-          onChange={() => toggleRowSelection(row.id)}
-          className="w-4 h-4"
-        />
-      ) : null,
-    },
-    { accessorKey: "date", header: "날짜" },
-    { accessorKey: "startTime", header: "시작 시간" },
-    { accessorKey: "endTime", header: "종료 시간" },
-    { accessorKey: "detailedWorkTime", header: "세부 작업시간 (분)" },
-    {
-      accessorKey: "worker",
-      header: "진행자",
-      cell: ({ row }) =>
-        row.original ? (
-          <input
-            type="text"
-            defaultValue={row.original.worker || ""}
-            onBlur={(e) => handleEdit(row.index, "worker", e.target.value)}
-            className="border px-2 py-1"
-          />
-        ) : null,
-    },
-    { accessorKey: "workId", header: "업무 고유번호" },
-    {
-      accessorKey: "workResult", header: "업무결과", cell: ({ row }) =>
-        row.original ? (
-          <input
-            type="text"
-            defaultValue={row.original.workResult || ""}
-            onBlur={(e) => handleEdit(row.index, "workResult", e.target.value)}
-            className="border px-2 py-1"
-          />
-        ) : null,
-    },
-    {
-      accessorKey: "taskDescription", header: "업무 내용", cell: ({ row }) =>
-        row.original ? (
-          <input
-            type="text"
-            defaultValue={row.original.taskDescription || ""}
-            onBlur={(e) => handleEdit(row.index, "taskDescription", e.target.value)}
-            className="border px-2 py-1"
-          />
-        ) : null,
-    },
-    {
-      header: "액션",
-      cell: ({ row }) => (
-        <div className="flex gap-2">
-          <button onClick={() => handleStart(row.id)} className="bg-green-500 text-white px-2 py-1 rounded">시작</button>
-          <button onClick={() => handleEnd(row.id)} className="bg-red-500 text-white px-2 py-1 rounded">종료</button>
-        </div>
-      ),
-    },
-  ];
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  const { sidebarOpen, toggleSidebarOpen } = useSidebar(); 
 
   return (
     <div className="bg-gray-50 dark:bg-gray-800">
       <Header />
-      <main className="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-        <Sidebar />
-        <div id="main-content" className="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
-          <main>
-            <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
-              <div className="w-full mb-1">
-                <div className="mb-4">
-                  <nav className="flex mb-5">
-                    <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">프로젝트1</h1>
-                  </nav>
+      <main className="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900 min-h-screen">
+        <Sidebar isOpen={sidebarOpen} toggleOpen={toggleSidebarOpen} />
+        <div id="main-content" className={`relative w-full h-full overflow-y-auto bg-gray-50 dark:bg-gray-900 transition-width duration-200 ${sidebarOpen ? "lg:ml-14" : "lg:ml-64"}`}>
+          <main className="min-h-screen dark:bg-gray-700">
+            <section className="px-4 mt-4 grid grid-cols-1 lg:grid-cols-3 gap-3">
+              <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex-shrink-0">
+                    <span className="text-xl font-bold leading-none text-gray-900 sm:text-2xl dark:text-white">$45,385</span>
+                    <h3 className="text-base font-light text-gray-500 dark:text-gray-400">Sales this week</h3>
+                  </div>
+                  <div className="flex items-center justify-end flex-1 text-base font-medium text-green-500 dark:text-green-400">
+                    12.5%
+                    <IconWidget icon="ArrowUpSo" />
+                  </div>
                 </div>
-                <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
-                  <div className="flex items-center mb-4 sm:mb-0">
-                    <div className="relative w-48 mt-1 sm:w-64 xl:w-96">
-                      <input type="text" name="email" id="products-search" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search for products" />
-                    </div>
-                    <div className="flex items-center w-full sm:justify-end">
-                      <div className="flex pl-2 space-x-1">
-                        <a href="#" className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"></path></svg>
-                        </a>
-                        <a href="#" className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
-                        </a>
-                        <a href="#" className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
-                        </a>
-                        <a href="#" className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
-                        </a>
+                <MainChart />
+              </div>
+              <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <h3 className="flex items-center mb-4 text-lg font-semibold text-gray-900 dark:text-white">Statistics this month
+                  <button type="button" className="ml-1">
+                    <IconWidget icon="Isow" className="fill-black" />
+                    <span className="sr-only ">Show information</span>
+                  </button>
+                </h3>
+                <ul className="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+                  <li className="w-full">
+                    <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" className="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500">Top products</button>
+                  </li>
+                  <li className="w-full">
+                    <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" className="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300">Top Customers</button>
+                  </li>
+                </ul>
+                <div className="pt-4">
+                  <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center min-w-0">
+                          <img className="flex-shrink-0 w-10 h-10" src="https://flowbite-admin-dashboard.vercel.app/images/products/iphone.png" alt="imac image" />
+                          <div className="ml-3">
+                            <p className="font-medium text-gray-900 truncate dark:text-white">iPhone 14 Pro</p>
+                            <div className="flex items-center justify-end flex-1 text-sm text-green-500 dark:text-green-400">
+                              <IconWidget icon="ArrowUpSo" />
+                              20%
+                              <span className="ml-2 text-gray-500">vs last month</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">$445,467</div>
                       </div>
-                    </div>
-                  </div>
-                  <button onClick={addWorkLog} className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">업무 추가</button>
+                    </li>
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center min-w-0">
+                          <img className="flex-shrink-0 w-10 h-10" src="https://flowbite-admin-dashboard.vercel.app/images/products/iphone.png" alt="imac image" />
+                          <div className="ml-3">
+                            <p className="font-medium text-gray-900 truncate dark:text-white">iPhone 14 Pro</p>
+                            <div className="flex items-center justify-end flex-1 text-sm text-green-500 dark:text-green-400">
+                              <IconWidget icon="ArrowUpSo" />
+                              20%
+                              <span className="ml-2 text-gray-500">vs last month</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">$445,467</div>
+                      </div>
+                    </li>
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center min-w-0">
+                          <img className="flex-shrink-0 w-10 h-10" src="https://flowbite-admin-dashboard.vercel.app/images/products/iphone.png" alt="imac image" />
+                          <div className="ml-3">
+                            <p className="font-medium text-gray-900 truncate dark:text-white">iPhone 14 Pro</p>
+                            <div className="flex items-center justify-end flex-1 text-sm text-green-500 dark:text-green-400">
+                              <IconWidget icon="ArrowUpSo" />
+                              20%
+                              <span className="ml-2 text-gray-500">vs last month</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">$445,467</div>
+                      </div>
+                    </li>
+                    <li className="py-3 sm:py-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center min-w-0">
+                          <img className="flex-shrink-0 w-10 h-10" src="https://flowbite-admin-dashboard.vercel.app/images/products/iphone.png" alt="imac image" />
+                          <div className="ml-3">
+                            <p className="font-medium text-gray-900 truncate dark:text-white">iPhone 14 Pro</p>
+                            <div className="flex items-center justify-end flex-1 text-sm text-green-500 dark:text-green-400">
+                              <IconWidget icon="ArrowUpSo" />
+                              20%
+                              <span className="ml-2 text-gray-500">vs last month</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">$445,467</div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col">
-              <div className="overflow-x-auto">
-                <div className="inline-block min-w-full align-middle">
-                  <div className="overflow-hidden shadow">
-                    <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
-                      <thead className="bg-gray-100 dark:bg-gray-700">
-                        <tr>
-                          {columns.map((col, i) => (
-                            <th key={i} scope="col" className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">{col.header}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                        {data.length > 0 ? (
-                          data.map((row, rowIndex) => (
-                            <tr key={row.id} className="border hover:bg-gray-100 dark:hover:bg-gray-700">
-                              {columns.map((col, colIndex) => (
-                                <td key={colIndex} className="border p-2">
-                                  <div className="text-base font-semibold text-gray-900 dark:text-white">{col.cell ? col.cell({ row, rowIndex }) : row[col.accessorKey]}</div>
-                                </td>
-                              ))}
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={columns.length} className="text-center p-4">
-                              데이터가 없습니다.
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
+            </section>
+            <section className="px-4 mt-4 grid w-full grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+              <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="w-full">
+                  <h3 className="text-base font-normal text-gray-500 dark:text-gray-400">New products</h3>
+                  <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">2,340</span>
+                  <p className="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+                    <span className="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+                      <IconWidget icon="ArrowUpSo" />
+                      12.5%
+                    </span>
+                    Since last month
+                  </p>
+                </div>
+                <div className="w-full">
+                  <SubChart />
+                </div>
+              </div>
+              <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="w-full">
+                  <h3 className="text-base font-normal text-gray-500 dark:text-gray-400">New products</h3>
+                  <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">2,340</span>
+                  <p className="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+                    <span className="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+                      <IconWidget icon="ArrowUpSo" />
+                      12.5%
+                    </span>
+                    Since last month
+                  </p>
+                </div>
+                <div className="w-full">
+                  <SubChart />
+                </div>
+              </div>
+              <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="w-full">
+                  <h3 className="text-base font-normal text-gray-500 dark:text-gray-400">New products</h3>
+                  <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">2,340</span>
+                  <p className="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
+                    <span className="flex items-center mr-1.5 text-sm text-green-500 dark:text-green-400">
+                      <IconWidget icon="ArrowUpSo" />
+                      12.5%
+                    </span>
+                    Since last month
+                  </p>
+                </div>
+                <div className="w-full">
+                  <SubChart />
+                </div>
+              </div>
+            </section>
+            <section className="px-4 mt-4">
+              <div className="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="items-center justify-between lg:flex">
+                  <div className="mb-4 lg:mb-0">
+                    <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">내 업무 모음</h3>
+                    <span className="text-base font-normal text-gray-500 dark:text-gray-400">오늘 등록한 내 업무 입니다.</span>
+                  </div>
+                  <div className="items-center sm:flex">
+                    <div className="flex items-center"></div>
+                    <div className="flex items-center space-x-4"></div>
+                  </div>
+                </div>
+                <div className="flex flex-col mt-6">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                    <thead className="bg-gray-50 dark:bg-gray-700">
+                      <tr>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border border-l text-center text-gray-500 uppercase dark:text-white w-10"><input type="checkbox" /></th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white">업로드일</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white w-1/6">제목</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white w-1/4">내용</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white">작성자</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white">진행사항</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white">업무 개수</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white">총 시간</th>
+                        <th scope="col" className="p-4 text-xs font-medium tracking-wider border text-center text-gray-500 uppercase dark:text-white">보기</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="p-4 text-sm border font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          <input type="checkbox" />
+                        </td>
+                        <td className="p-4 text-sm border text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">2025-02-01</td>
+                        <td className="p-4 text-sm border font-normal text-gray-900 whitespace-nowrap dark:text-white">제목 입니다!!</td>
+                        <td className="p-4 text-sm border font-normal text-gray-900 whitespace-nowrap dark:text-white">내용 입니다!!</td>
+                        <td className="p-4 text-sm border text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">관리자</span>
+                        </td>
+                        <td className="p-4 text-sm border text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">진행중</span>
+                        </td>
+                        <td className="p-4 text-sm border text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          <span>1</span>개
+                        </td>
+                        <td className="p-4 text-sm border text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          30분
+                        </td>
+                        <td className="p-4 text-sm border text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          <button type="button" className="Btn_Tiem_Start bg-green-500 text-white px-2 py-1 rounded text-sm mr-1">수정</button>
+                          <button type="button" className="Btn_Tiem_End bg-red-500 text-white px-2 py-1 rounded text-sm">삭제</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex items-center justify-between pt-3 sm:pt-6">
+                  <div className="flex-shrink-0">
+                    <Link to={"#"} className="inline-flex items-center p-2 text-xs font-medium uppercase rounded-lg text-primary-700 sm:text-sm hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700">
+                      Transactions Report
+                    </Link>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
           </main>
           <Footer />
         </div>

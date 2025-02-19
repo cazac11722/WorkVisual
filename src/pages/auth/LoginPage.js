@@ -24,9 +24,9 @@ const LoginPage = () => {
 
                 if (response.ok) {
                     const result = await response.json();
-                    login(result.access, { data, "id" : result.user_id, lv : result.membership_level });
+                    login(result.token, { data, "id" : result.user_id, lv : result.membership_level });
                     alert("로그인이 되었습니다.");
-                    navigate("/");
+                    navigate("/WorkVisual/");
                     // 로그인 성공 처리
                 } else {
                     console.error("Login failed:", response.status);
@@ -68,7 +68,7 @@ const LoginPage = () => {
                     </button>
                 </form>
                 <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    계정이 없나요? <Link to={"/meta533/sign-up"} className="text-primary-700 hover:underline dark:text-primary-500">계정 만들기</Link>
+                    계정이 없나요? <Link to={"/WorkVisual/sign-up"} className="text-primary-700 hover:underline dark:text-primary-500">계정 만들기</Link>
                 </div>
             </div>
         </Layout>
