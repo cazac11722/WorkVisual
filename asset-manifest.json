@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/WorkVisual/static/css/main.ed07941a.css",
-    "main.js": "/WorkVisual/static/js/main.d775ddfd.js",
+    "main.css": "/WorkVisual/static/css/main.19884aca.css",
+    "main.js": "/WorkVisual/static/js/main.ea3d9fde.js",
     "index.html": "/WorkVisual/index.html",
+    "static/media/CalendarMonth.svg": "/WorkVisual/static/media/CalendarMonth.7e164032fea10b4aa8827b56d5cd6c30.svg",
     "static/media/Settings.svg": "/WorkVisual/static/media/Settings.4f46b93969c652931a7721b19e66cdd0.svg",
     "static/media/Pdf.svg": "/WorkVisual/static/media/Pdf.3518fc0b49c8853a3435a169d3e51a38.svg",
     "static/media/schedule.svg": "/WorkVisual/static/media/schedule.d18ba9af16b7cfced1107c2ec777c350.svg",
@@ -21,18 +22,21 @@
     "static/media/Download.svg": "/WorkVisual/static/media/Download.d42bec47d776016370ef238eabf7fee8.svg",
     "static/media/SwapVert.svg": "/WorkVisual/static/media/SwapVert.5bc6b250999681aca3708b8c16a3d587.svg",
     "static/media/Fullscreen.svg": "/WorkVisual/static/media/Fullscreen.46d32be139aa35a976a79c9e0fed9426.svg",
+    "static/media/Close.svg": "/WorkVisual/static/media/Close.fb4cabc3dd433946ff0b50f2c1f39c67.svg",
     "static/media/FilterList.svg": "/WorkVisual/static/media/FilterList.0fbfa7e5b28a9cfcb782608ec3c30a1e.svg",
+    "static/media/Sort.svg": "/WorkVisual/static/media/Sort.372ba4d949a8dad8fbd577fd9d79aae8.svg",
+    "static/media/menu.svg": "/WorkVisual/static/media/menu.271ea0c1da28d003ec386119e7b1ca5c.svg",
     "static/media/ArrowBack.svg": "/WorkVisual/static/media/ArrowBack.d6d3143265cf42b7fc6f0367fe75dacc.svg",
     "static/media/Add.svg": "/WorkVisual/static/media/Add.db8059549b1bd98b424237d048d5e7c3.svg",
     "static/media/ArrowDown.svg": "/WorkVisual/static/media/ArrowDown.1faa601f7cf69f0226d813daa3232e33.svg",
     "static/media/ChevronLeft.svg": "/WorkVisual/static/media/ChevronLeft.c8791cd3448d83fe72c5707370434a9f.svg",
     "static/media/ChevronRight.svg": "/WorkVisual/static/media/ChevronRight.5248d16806a8a574dede33b460847cd9.svg",
     "static/media/check.svg": "/WorkVisual/static/media/check.14ef6b5f03f1276e855936235c6b5d58.svg",
-    "main.ed07941a.css.map": "/WorkVisual/static/css/main.ed07941a.css.map",
-    "main.d775ddfd.js.map": "/WorkVisual/static/js/main.d775ddfd.js.map"
+    "main.19884aca.css.map": "/WorkVisual/static/css/main.19884aca.css.map",
+    "main.ea3d9fde.js.map": "/WorkVisual/static/js/main.ea3d9fde.js.map"
   },
   "entrypoints": [
-    "static/css/main.ed07941a.css",
-    "static/js/main.d775ddfd.js"
+    "static/css/main.19884aca.css",
+    "static/js/main.ea3d9fde.js"
   ]
 }
