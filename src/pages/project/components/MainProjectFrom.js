@@ -14,70 +14,45 @@ const MainProjectFrom = () => {
     });
     const [allIs, setAllIs] = useState(false);
 
-    const [data, setData] = useState([
-        {
-            id: uuidv4(),
-            date: new Date().toISOString().slice(0, 10),
-            startTime: null,
-            endTime: null,
-            detailedWorkTime: 0,
-            worker: "",
-            workId: uuidv4().slice(0, 5),
-            workResult: "입력해주세요.",
-            taskDescription: "입력해주세요.",
-            selection: false,
-        }
-    ]);
+    const [data, setData] = useState([]);
 
     const [columns, setColumns] = useState([
+        { accessorKey: "date", header: "날짜", size: 200, type: 'date' },
         {
-            accessorKey: "select",
-            header:
-                (
-                    <div id="Allchk" className="flex items-center justify-center w-5 h-5 border cursor-pointer bg-white " onClick={() => {
-                        controller.selectedRowsController.setAllIs((prev) => {
-                            controller.selectedRowsController.toggleAllRowsSelection(!prev)
-                            return !prev;
-                        });
-                    }}>
-                        <IconWidget icon="Check" className={`w-4 ${allIs ? '' : 'hidden'}`} />
-                    </div>
-                ),
-            cell: ({ row, i }) =>
-                row ? (
-                    <input
-                        type="checkbox"
-                        id={row.id}
-                        name={row.id}
-                        checked={row.selection}
-                        onChange={(e) => { controller.selectedRowsController.toggleRowSelection(row.id) }}
-                        className="w-4 h-4 m-auto block ChkBox"
-                        min="4" max="8" size="10"
+            accessorKey: "workId", header: "업무 고유번호", type: 'initNumber',
+            cell: ({ row }) =>
+                row.workId ? (
+                    <textarea
+                        type="text"
+                        id={`text_workId_${row.id}`}
+                        name={`text_workId_${row.id}`}
+                        defaultValue={row.workId || ""}
+                        onBlur={(e) => controller.init.handleEdit(row.id, "workId", e.target.value)}
+                        rows={1}
+                        className="border px-2 py-1 border-none "
                     />
                 ) : null,
-            size: 20,
+            size: 200
         },
-        { accessorKey: "date", header: "날짜", size: 150, },
         {
-            accessorKey: "startTime", header: "시작 시간",
+            accessorKey: "startTime", header: "시간", type: 'dubTime',
             cell: ({ row }) => {
+                let html = '';
                 if (!row.startTime) return '';
                 const startTime = new Date(row.startTime);
-                return (startTime.toLocaleTimeString())
-            },
-            size: 130,
-        },
-        {
-            accessorKey: "endTime", header: "종료 시간",
-            cell: ({ row }) => {
-                if (!row.endTime) return '';
+
+                html += (startTime.toLocaleTimeString()) + " ~ ";
+
+                if (!row.endTime) return (html);
                 const endTime = new Date(row.endTime);
-                return (endTime.toLocaleTimeString())
+                html += (endTime.toLocaleTimeString())
+
+                return (html);
             },
-            size: 130
+            size: 250,
         },
         {
-            accessorKey: "detailedWorkTime", header: "세부 작업시간",
+            accessorKey: "detailedWorkTime", header: "세부 작업시간", type: 'time',
             cell: ({ row }) => {
                 if (!row.detailedWorkTime) return '';
                 const diffMs = new Date(row.detailedWorkTime);
@@ -90,14 +65,12 @@ const MainProjectFrom = () => {
                 if (hours > 0) timeParts.push(`${hours}시간`);
                 if (minutes > 0) timeParts.push(`${minutes}분`);
                 if (seconds >= 0) timeParts.push(`${seconds}초`);
-
-
                 return timeParts.join(" ");
             },
             size: 130
         },
         {
-            accessorKey: "AllDetailedWorkTime", header: "총 작업시간",
+            accessorKey: "AllDetailedWorkTime", header: "총 작업시간", type: 'time',
             cell: ({ row }) => {
                 if (!row.AllDetailedWorkTime) return '';
                 const diffMs = new Date(row.AllDetailedWorkTime);
@@ -117,9 +90,9 @@ const MainProjectFrom = () => {
             size: 130
         },
         {
-            header: "액션",
+            header: "액션",  type: 'btn',
             cell: ({ row }) => (
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center justify-center w-auto">
                     <button type="button" onClick={(e) => controller.init.handleStart(row.id)} className="Btn_Tiem_Start bg-green-500 text-white px-2 py-1 rounded text-sm">시작</button>
                     <button type="button" onClick={(e) => controller.init.handleEnd(row.id)} className="Btn_Tiem_End bg-red-500 text-white px-2 py-1 rounded text-sm">종료</button>
                 </div>
@@ -127,39 +100,18 @@ const MainProjectFrom = () => {
             size: 150
         },
         {
-            accessorKey: "worker",
+            accessorKey: "worker", type: 'select',
             header: "진행자",
             cell: ({ row }) =>
                 row.worker ? (
-                    row.worker
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
+                        {row.worker}
+                    </span>
                 ) : null,
             size: 130
         },
         {
-            accessorKey: "workId", header: "업무 고유번호",
-            cell: ({ row }) =>
-                row.workId ? (
-                    <div className="px-1">
-                        <textarea
-                            type="text"
-                            id={`text_workId_${row.id}`}
-                            name={`text_workId_${row.id}`}
-                            defaultValue={row.workId || ""}
-                            onBlur={(e) => controller.init.handleEdit(row.id, "workId", e.target.value)}
-                            rows={1}
-                            className="border px-2 py-1 border-none "
-                        />
-                        <div className="absolute right-0 top-0">
-                            <div>+</div>
-                            <div>0</div>
-                            <div>-</div>
-                        </div>
-                    </div>
-                ) : null,
-            size: 200
-        },
-        {
-            accessorKey: "workResult", header: "업무결과", cell: ({ row }) =>
+            accessorKey: "workResult", header: "업무결과", type: 'select', cell: ({ row }) =>
                 row.workResult ? (
                     <textarea
                         type="text"
@@ -173,7 +125,7 @@ const MainProjectFrom = () => {
             size: 150
         },
         {
-            accessorKey: "taskDescription", header: "업무 내용", cell: ({ row }) =>
+            accessorKey: "taskDescription", header: "업무 내용", type: 'textarea', cell: ({ row }) =>
                 row.taskDescription ? (
                     <textarea
                         type="text"
@@ -187,7 +139,7 @@ const MainProjectFrom = () => {
             size: 500
         },
         {
-            accessorKey: "workConfirm", header: "컨펌요청", cell: ({ row }) =>
+            accessorKey: "workConfirm", header: "컨펌요청", type: 'textarea', cell: ({ row }) =>
                 row.workConfirm ? (
                     <textarea
                         type="text"
@@ -201,21 +153,28 @@ const MainProjectFrom = () => {
             size: 150
         },
         {
-            accessorKey: "workCount", header: "숫자", cell: ({ row }) =>
+            accessorKey: "workCount", header: "숫자", type: 'number', cell: ({ row }) =>
                 row.workCount ? (
-                    <textarea
-                        type="text"
-                        id={`text_workCount_${row.id}`}
-                        name={`text_workCount_${row.id}`}
-                        defaultValue={row.workCount || ""}
-                        onBlur={(e) => controller.init.handleEdit(row.id, "workCount", e.target.value)}
-                        className="border px-2 py-1 border-none"
-                    />
+                    <div>
+                        <textarea
+                            type="text"
+                            id={`text_workCount_${row.id}`}
+                            name={`text_workCount_${row.id}`}
+                            defaultValue={row.workCount || ""}
+                            onBlur={(e) => controller.init.handleEdit(row.id, "workCount", e.target.value)}
+                            className="border px-2 py-1 border-none"
+                        />
+                        <div className="absolute right-0 top-0">
+                            <div>+</div>
+                            <div>0</div>
+                            <div>-</div>
+                        </div>
+                    </div>
                 ) : null,
             size: 150
         },
         {
-            accessorKey: "workTimeAve", header: "시간별 평균값", cell: ({ row }) =>
+            accessorKey: "workTimeAve", header: "시간별 평균값", type: 'time', cell: ({ row }) =>
                 row.workTimeAve ? (
                     <textarea
                         type="text"
@@ -233,7 +192,7 @@ const MainProjectFrom = () => {
     const controller = useTable(data, setData, columns, setColumns);
 
     return (
-        <div className="flex flex-col p-4 shadow-lg bg-white rounded-lg col-span-3 lg:p-6 dark:bg-gray-900" id="FullScreen" onClick={controller.globalEventListener.handleClickOutside}>
+        <div className="flex flex-col p-4 shadow-lg bg-white rounded-lg col-span-3 lg:p-6 dark:bg-gray-900" onClick={controller.globalEventListener.handleClickOutside}>
             <a href="/WorkVisual/" className="flex items-center mb-4 text-2xl font-semibold lg:mb-8 dark:text-white">
                 <img src="https://flowbite-admin-dashboard.vercel.app/images/logo.svg" className="mr-4 h-11" alt="FlowBite Logo" />
                 <span>리빙쇼핑물</span>

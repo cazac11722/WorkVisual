@@ -29,6 +29,9 @@ import { ReactComponent as Close } from "../../assets/svg/Close.svg";
 import { ReactComponent as CalendarMonth } from "../../assets/svg/CalendarMonth.svg";
 import { ReactComponent as Menu } from "../../assets/svg/menu.svg";
 import { ReactComponent as Sort } from "../../assets/svg/Sort.svg";
+import { ReactComponent as MoreHoriz } from "../../assets/svg/MoreHoriz.svg";
+
+
 
 const IconWidget = (props) => {
     let html = '';
@@ -120,6 +123,9 @@ const IconWidget = (props) => {
             break;
         case "Sort":
             html = <Sort className={props.className} />
+            break;
+        case "MoreHoriz":
+            html = <MoreHoriz className={props.className} />
             break;
     }
 

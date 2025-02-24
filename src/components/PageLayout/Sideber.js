@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import IconWidget from "../Widget/icon_widget";
 import SidebarItem from "../Sidebar/Sideber_item";
 import { useAuth } from "../../contexts/AuthContext";
+import SidebarItemSub from "../Sidebar/Sideber_item_sub";
 
 const Sidebar = ({isOpen, toggleOpen}) => {
     const { user } = useAuth();
@@ -15,7 +16,7 @@ const Sidebar = ({isOpen, toggleOpen}) => {
                         <ul className="pb-2 space-y-2">
                             <li className="flex items-center">
                                 <Link to={`/WorkVisual/p/${user.id}/add`} className={`flex items-center justify-center text-sm bg-primary-600 text-white w-full py-2 px-1 rounded-lg hover:bg-primary-700 mr-2 ${isOpen ? 'hidden' : ''}`}>
-                                    <IconWidget icon="Add" className="fill-white mr-1 w-5" />업무 추가
+                                    <IconWidget icon="Add" className="fill-white mr-1 w-5" />프로젝트 추가
                                 </Link>
                                 <button type="button" onClick={() => toggleOpen()} className="py-2">
                                     <IconWidget icon="Sort" className={`w-10 fill-black cursor-pointer ${isOpen ? 'hidden' : ''}`} />
@@ -29,16 +30,13 @@ const Sidebar = ({isOpen, toggleOpen}) => {
                                 <SidebarItem href={`/WorkVisual/p/${user.id}/list`} name="내 프로젝트" icon="Description" textShow={isOpen} />
                             </li>
                             <li>
-                                <SidebarItem href={`/m/m/${user.id}`} name="팀활동" icon="Monitoring" textShow={isOpen} />
+                                <SidebarItemSub href={`/m/${user.id}`} name="직원 활동 " icon="Monitoring" textShow={isOpen} />
                             </li>
                             <li>
                                 <SidebarItem href={`/WorkVisual/l/${user.id}`} name="캘린더 " icon="CalendarMonth" textShow={isOpen} />
                             </li>
                             <li>
                                 <SidebarItem href={`/ap/m/${user.id}`} name="활동 로그" icon="Settings" textShow={isOpen} />
-                            </li>
-                            <li>
-                                <SidebarItem href={`/WorkVisual/guide/${user.id}`} name="이용 가이드" icon="FactCheck" textShow={isOpen} />
                             </li>
                         </ul>
                     </div>

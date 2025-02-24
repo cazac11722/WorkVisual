@@ -1,6 +1,6 @@
 // hooks/useTable.js
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 class TableManager {
     constructor(data, setData, columns, setColumns) {
@@ -34,6 +34,20 @@ export const useTable = (data, setData, columns, setColumns) => {
 const Init = (cle) => {
     // 전화 화면 변수 
     const [isFullScreen, setIsFullScreen] = useState(false);
+
+    const [expandedRows, setExpandedRows] = useState([]);
+
+    // Toggle row expansion
+    const toggleRow = (id) => {
+        setExpandedRows(prev => {
+            const isExpanded = prev.includes(id);
+            if (isExpanded) {
+                return prev.filter(rowId => rowId !== id);
+            } else {
+                return [...prev, id];
+            }
+        });
+    };
 
     const toggleFullScreen = () => {
         const mainTable = document.getElementById("FullScreen");
@@ -73,6 +87,32 @@ const Init = (cle) => {
 
         cle.setData((prevData) => [...prevData, newRow]);
     };
+
+    const addRowLog = (rowIndex, colIndex) => {
+        let data = {};
+        
+        cle.columns.forEach((e, i) => {
+            if (i <= colIndex) {
+                data[e.accessorKey] = cle.data[rowIndex][e.accessorKey];
+            } else {
+                data[e.accessorKey] = null;
+            }
+        });
+    
+        data['id'] = uuidv4(); // 새로운 고유 ID 생성
+    
+        cle.setData((prevData) => {
+            const newData = [...prevData]; // 기존 데이터 복사
+            newData.splice(rowIndex + 1, 0, data); // `rowIndex + 1` 위치에 새로운 행 삽입
+            return newData;
+        });
+    };
+
+    // 열 업무 추가 함수
+    const addColumns = () => {
+        cle.setColumns((prev) => [...prev, { accessorKey: "date", header: "날짜", size: 200, }])
+    };
+
 
     // 시작 버튼 클릭 시
     const handleStart = (rowId) => {
@@ -121,7 +161,7 @@ const Init = (cle) => {
     };
 
 
-    return { isFullScreen: isFullScreen, toggleFullScreen: toggleFullScreen, addWorkLog: addWorkLog, handleStart: handleStart, handleEnd: handleEnd, handleEdit: handleEdit, handleDeleteSelectedRows: handleDeleteSelectedRows }
+    return { expandedRows: expandedRows, toggleRow: toggleRow, isFullScreen: isFullScreen, toggleFullScreen: toggleFullScreen, addWorkLog: addWorkLog, addRowLog: addRowLog, addColumns: addColumns, handleStart: handleStart, handleEnd: handleEnd, handleEdit: handleEdit, handleDeleteSelectedRows: handleDeleteSelectedRows }
 }
 
 const FilterController = (cle) => {
@@ -168,13 +208,13 @@ const SelectedRowsController = (cle) => {
         });
     };
 
-    useEffect(() => {
-        if (allIs) {
-            document.querySelector("#Allchk > svg").classList.remove('hidden')
-        } else {
-            document.querySelector("#Allchk > svg").classList.add('hidden')
-        }
-    }, [allIs])
+    // useEffect(() => {
+    //     if (allIs) {
+    //         document.querySelector("#Allchk > svg").classList.remove('hidden')
+    //     } else {
+    //         document.querySelector("#Allchk > svg").classList.add('hidden')
+    //     }
+    // }, [allIs])
 
     return { allIs: allIs, setAllIs: setAllIs, toggleRowSelection: toggleRowSelection, toggleAllRowsSelection: toggleAllRowsSelection }
 }
@@ -212,6 +252,7 @@ const OptionController = (cle) => {
 
     return { config: optionBox, optionBoxRef: optionBoxRef, setConfig: setOptionBox, handleHeaderClick: handleHeaderClick, toggleColumnVisibility: toggleColumnVisibility, updateHeader: updateHeader }
 }
+
 
 const SortController = (cle) => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });

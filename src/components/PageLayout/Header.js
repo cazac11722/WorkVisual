@@ -3,10 +3,13 @@ import Logo from "../Logo/Logo";
 import useDropdown from "../../contexts/hooks/useDropdown";
 import { useAuth } from "../../contexts/AuthContext";
 import IconWidget from "../Widget/icon_widget";
+import useCommute from "../../contexts/hooks/useCommute";
 
 const Header = () => {
     const { isOpen, toggleDropdown, dropdownRef } = useDropdown();
     const { logout, user } = useAuth();
+    const { commute, goWork, leaveWork} = useCommute();
+
     return (
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
             <div className="px-3 py-3 lg:px-5 lg:pl-3 relative">
@@ -51,8 +54,9 @@ const Header = () => {
                                 </div>
                                 <ul className="py-1" >
                                     <li className="p-2">
-                                        <button type="button" className="flex items-center justify-center w-full text-sm bg-[#061638] text-white p-2 rounded-lg hover:bg-[#253455]">
-                                            <IconWidget icon="Schedule" className="fill-white mr-1 w-5" />출근하기
+                                        <button onClick={commute ? leaveWork : goWork} type="button" className={` flex items-center justify-center w-full text-sm  text-white p-2 rounded-lg ${commute ? 'bg-[#e74646] hover:bg-[#e67878]' : 'bg-[#061638] hover:bg-[#253455]'}`}>
+                                            <IconWidget icon="Schedule" className="fill-white mr-1 w-5" />
+                                            {commute ? "퇴근하기" : '출근하기'}
                                         </button>
                                     </li>
                                     <li>
@@ -60,6 +64,9 @@ const Header = () => {
                                     </li>
                                     <li>
                                         <Link to={`/WorkVisual/p/${user.id}/list`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">내 프로젝트</Link>
+                                    </li>
+                                    <li>
+                                        <Link to={`/WorkVisual/guide/`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">이용 가이드</Link>
                                     </li>
                                     <li>
                                         <div onClick={logout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">로그아웃</div>

@@ -38,21 +38,17 @@ const SubHeader = () => {
                     <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">프로젝트 등록</h1>
                 </div>
                 <div className="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
-                    <Link to={'../'} className="flex items-center ">
+                    <Link to={'/WorkVisual'} className="flex items-center ">
                         <IconWidget icon="ArrowBack" />
                         <span className="text-lg font-bold ml-2">Back to 대시버드</span>
                     </Link>
                     <div className="flex">
-                        <button className="flex align-center items-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
-                            <IconWidget icon="Delete" className="w-5" />
-                            <span className="ml-1 text-sm">Print</span>
-                        </button>
                         <button
                             type="button"
                             onClick={(e) => {
                                 setIsOption((prev) => !prev);
                             }}
-                            className="flex py-2 px-4 mx-4 bg-white border rounded-lg relative items-center  hover:bg-gray-100"
+                            className="flex py-2 px-4 bg-white border rounded-lg relative items-center  hover:bg-gray-100"
                         >
                             <IconWidget icon="Download" className="w-5 mr-1 fill-black" />
                             <span className="text-sm mr-1">다운로드</span>
@@ -65,9 +61,13 @@ const SubHeader = () => {
                                 </ul>
                             </div>
                         </button>
-                        <button className="flex align-center items-center text-white bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-primary-600 focus:outline-none dark:focus:ring-primary-800 hover:bg-blue-500 ">
+                        <button className="flex align-center items-center mx-2 text-white bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-primary-600 focus:outline-none dark:focus:ring-primary-800 hover:bg-blue-500 ">
                             <IconWidget icon="Print" className="w-5 mr-1 fill-white" />
                             Print
+                        </button>
+                        <button className="flex align-center items-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
+                            <IconWidget icon="Delete" className="w-5" />
+                            <span className="ml-1 text-sm">삭제</span>
                         </button>
                     </div>
                 </div>

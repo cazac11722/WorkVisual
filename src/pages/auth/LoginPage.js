@@ -43,7 +43,7 @@ const LoginPage = () => {
             <div className="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">로그인</h3>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}  method="post">
-                    <InputField label="이메일" type="text" name="username" id="username" placeholder="name@company.com" value={formState.username} onChange={handleChange} required={true} />
+                    <InputField label="이메일" type="text" name="username" id="username" placeholder="홍길동" value={formState.username} onChange={handleChange} required={true} />
                     <InputField label="비밀번호" type="password" name="password" id="password" placeholder="••••••••" value={formState.password} onChange={handleChange} required={true} />
                     <div className="flex items-start">
                         <div className="flex items-center h-5">
