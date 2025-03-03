@@ -253,7 +253,6 @@ const OptionController = (cle) => {
     return { config: optionBox, optionBoxRef: optionBoxRef, setConfig: setOptionBox, handleHeaderClick: handleHeaderClick, toggleColumnVisibility: toggleColumnVisibility, updateHeader: updateHeader }
 }
 
-
 const SortController = (cle) => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 

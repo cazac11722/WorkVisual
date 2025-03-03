@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import Header from '../../components/PageLayout/Header';
 import Sidebar from '../../components/PageLayout/Sideber';
@@ -12,7 +13,17 @@ import { useSidebar } from "../../contexts/hooks/useSidebar";
 
 const View = () => {
   const { sidebarOpen, toggleSidebarOpen } = useSidebar();
-
+  const [headerConfig, setHeaderConfig] = useState({
+    title: "관리자 팀원 프로젝트 관리",
+    ref: [
+      { title: "관리자", href: "#" },
+      { title: "팀원 프로젝트 관리", href: "#" },
+    ],
+    filter: false,
+    back: false,
+    titleShow: true,
+    btn: ['download_file', 'print', 'delete']
+  });
   return (
     <div className="bg-gray-50 dark:bg-gray-800">
       <Header />
@@ -20,7 +31,7 @@ const View = () => {
         <Sidebar isOpen={sidebarOpen} toggleOpen={toggleSidebarOpen} />
         <div id="main-content" className={`relative w-full h-full overflow-y-auto bg-gray-50 dark:bg-gray-900 transition-width duration-200 ${sidebarOpen ? "lg:ml-14" : "lg:ml-64"}`}>
           <main className="min-h-screen dark:bg-gray-700">
-            <SubHeader />
+            <SubHeader headerConfig={headerConfig} />
             <section className="p-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
               <MainProjectFrom />
               <SetMyGoals />
@@ -31,6 +42,6 @@ const View = () => {
       </main>
     </div>
   );
-}; 
+};
 
 export default View;

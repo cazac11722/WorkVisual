@@ -30,6 +30,14 @@ import { ReactComponent as CalendarMonth } from "../../assets/svg/CalendarMonth.
 import { ReactComponent as Menu } from "../../assets/svg/menu.svg";
 import { ReactComponent as Sort } from "../../assets/svg/Sort.svg";
 import { ReactComponent as MoreHoriz } from "../../assets/svg/MoreHoriz.svg";
+import { ReactComponent as Public } from "../../assets/svg/public.svg";
+import { ReactComponent as CheckBox } from "../../assets/svg/checkBox.svg";
+import { ReactComponent as CloseBox } from "../../assets/svg/CloseBox.svg";
+import { ReactComponent as KidStar } from "../../assets/svg/KidStar.svg";
+import { ReactComponent as Apps } from "../../assets/svg/apps.svg";
+import { ReactComponent as Bolt } from "../../assets/svg/Bolt.svg";
+import { ReactComponent as Visibility } from "../../assets/svg/Visibility.svg";
+
 
 
 
@@ -126,6 +134,27 @@ const IconWidget = (props) => {
             break;
         case "MoreHoriz":
             html = <MoreHoriz className={props.className} />
+            break;
+        case "Public":
+            html = <Public className={props.className} />
+            break;
+        case "CheckBox":
+            html = <CheckBox className={props.className} />
+            break;
+        case "CloseBox":
+            html = <CloseBox className={props.className} />
+            break;
+        case "KidStar":
+            html = <KidStar className={props.className} />
+            break;
+        case "Apps":
+            html = <Apps className={props.className} />
+            break;
+        case "Bolt":
+            html = <Bolt className={props.className} />
+            break;
+        case "Visibility":
+            html = <Visibility className={props.className} />
             break;
     }
 

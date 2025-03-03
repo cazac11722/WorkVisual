@@ -60,23 +60,23 @@ const useCommute = () => {
 
         try {
             // const response = await fetch(`${mainUrl}/api/accounts/schedule/`, {
-            const response = await fetch(`http://127.0.0.1:8000/api/accounts/schedule/`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Token ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data),
-            });
+            // const response = await fetch(`http://127.0.0.1:8000/api/accounts/schedule/`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Authorization": `Token ${localStorage.getItem('token')}`,
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(data),
+            // });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log(result)
-                // 로그인 성공 처리
-            } else {
-                console.error("Login failed:", response.status);
-                // 오류 처리
-            }
+            // if (response.ok) {
+            //     const result = await response.json();
+            //     console.log(result)
+            //     // 로그인 성공 처리
+            // } else {
+            //     console.error("Login failed:", response.status);
+            //     // 오류 처리
+            // }
         } catch (error) {
             console.error("An error occurred:", error);
         }
