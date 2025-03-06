@@ -306,8 +306,7 @@ const InformationList = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            data.userList?.map((e, i) => {
-                                                console.log(e);
+                                            data?.userList?.map((e, i) => {
                                                 return (<tr key={i}>
                                                     <td className="p-4 text-sm border-r font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                                         <input

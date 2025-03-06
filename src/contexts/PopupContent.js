@@ -8,6 +8,11 @@ import ReasonUpdateModal from "../pages/admin/components/ReasonUpdateModal";
 import DepartmentUpdateModal from "../pages/admin/components/DepartmentUpdateModal";
 import PointerUpdateModal from "../pages/admin/components/PointerUpdateModal";
 import UserProjectAddModal from "../pages/admin/components/UserProjectAddModal";
+import ConfigureProjectCategorySetModal from "../pages/admin/components/ConfigureProjectCategorySetModal";
+import OrganizationProjectTypeSetModal from "../pages/admin/components/OrganizationProjectTypeSetModal";
+import OrganizationGoalSetModal from "../pages/admin/components/OrganizationGoalSetModal";
+import OrganizationCommonTextSetModal from "../pages/admin/components/OrganizationCommonTextSetModal";
+import OrganizationWorkSetModal from "../pages/admin/components/OrganizationWorkSetModal";
 
 const PopupContent = ({ type, onClose, setData, data, id }) => {
 
@@ -33,8 +38,23 @@ const PopupContent = ({ type, onClose, setData, data, id }) => {
         case "pointerUpdateModal":
             return <PointerUpdateModal onClose={onClose} data={data} setData={setData} id={id} />
             break;
-        case "UserProjectAdd" :
+        case "UserProjectAdd":
             return <UserProjectAddModal onClose={onClose} data={data} setData={setData} id={id} />
+            break;
+        case "ConfigureProjectCategorySetModal":
+            return <ConfigureProjectCategorySetModal onClose={onClose} data={data} setData={setData} id={id} />
+            break;
+        case "OrganizationProjectTypeSetModal":
+            return <OrganizationProjectTypeSetModal onClose={onClose} data={data} setData={setData} id={id} />
+            break;
+        case "OrganizationGoalSetModal":
+            return <OrganizationGoalSetModal onClose={onClose} data={data} setData={setData} id={id} />
+            break;
+        case "OrganizationCommonTextSetModal" :
+            return <OrganizationCommonTextSetModal onClose={onClose} data={data} setData={setData} id={id} />
+            break;
+        case "OrganizationWorkSetModal" :
+            return <OrganizationWorkSetModal onClose={onClose} data={data} setData={setData} id={id} />
             break;
         default:
             return (

@@ -1,7 +1,9 @@
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import IconWidget from "../Widget/icon_widget";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { onCLS } from "web-vitals";
+import { CellController } from "../../contexts/CellController";
+import OptionSelect from "../Widget/OptionSelect";
 
 
 const ProjectTable = ({ data, setData, columns, setColumns, config }) => {
@@ -16,7 +18,7 @@ const ProjectTable = ({ data, setData, columns, setColumns, config }) => {
         <>
             <TableHeader config={config} />
             <TableFilter filterConfig={config.filterController} />
-            <TableBody data={data} columns={columns} setColumns={setColumns} config={config} />
+            <TableBody data={data} setData={setData} columns={columns} setColumns={setColumns} config={config} />
         </>
     );
 }
@@ -27,9 +29,9 @@ const TableHeader = ({ config }) => {
             <div className="relative w-48 mt-1 sm:w-64 xl:w-96"></div>
             <div className="flex items-center sm:justify-end">
                 <div className="flex pl-2 space-x-1">
-                    {/* <button type="button" onClick={config.init.toggleFullScreen} className="p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <button type="button" onClick={config.init.toggleFullScreen} className="p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <IconWidget icon="Fullscreen" className={"fill-black w-5"} />
-                    </button> */}
+                    </button>
                     <button type="button" onClick={config.init.handleDeleteSelectedRows} className="p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <IconWidget icon="Delete" className={"fill-black w-5"} />
                     </button>
@@ -102,11 +104,9 @@ const TableFilter = ({ filterConfig }) => {
     )
 }
 
-const TableBody = ({ data, columns, config, setColumns }) => {
+const TableBody = ({ data, setData, columns, config, setColumns }) => {
 
     const alert = (config) => {
-
-
         let option = config.optionController;
         let sort = config.sortController;
 
@@ -123,26 +123,36 @@ const TableBody = ({ data, columns, config, setColumns }) => {
                     <div>
                         <input type="text" className="border rounded bg-white dark:gb-gray-900 h-[30px] px-2 "
                             defaultValue={option.config.column.header}
-                            onKeyUp={(e) => config.updateHeader(config.config.column.accessorKey, e.target.value)}
+                            onKeyUp={(e) => config.optionController.updateHeader(option.config.column.accessorKey, e.target.value)}
                         />
                     </div>
                 </div>
                 <ul className="p-2 border-b">
-                    <li><div></div><span>속성 편집</span></li>
+                    <li className="flex items-center justify-between">
+                        <span className="flex items-center text-sm">
+                            <IconWidget icon="Settings" className="w-4 mr-2 fill-black" />
+                            속성
+                        </span>
+                        <OptionSelect column={option.config.column} updateTpye={option.updateTpye} />
+                    </li>
                 </ul>
                 <ul className="p-2 border-b">
                     <li
-                        onClick={() => sort.handleSort(option.config.column.accessorKey)}
-                        className="flex px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={() => sort.handleSort(option.config.column.accessorKey, "asc")}
+                        className="flex items-center px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                     >
-                        <IconWidget icon="SwapVert" className="w-5 mr-1 fill-black" />
+                        {sort.config.direction == "asc" && sort.config.key != null ? (
+                            <IconWidget icon="ArrowUpSo" className="w-5 mr-1 fill-black" />
+                        ) : (<IconWidget icon="SwapVert" className="w-5 mr-1 fill-black" />)}
                         <span className="text-sm ">오름차순</span>
                     </li>
                     <li
-                        onClick={() => sort.handleSort(option.config.column.accessorKey)}
-                        className="flex px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        onClick={() => sort.handleSort(option.config.column.accessorKey, "desc")}
+                        className="flex items-center px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                     >
-                        <IconWidget icon="SwapVert" className="w-5 mr-1 fill-black" />
+                        {sort.config.direction == "desc" && sort.config.key != null ? (
+                            <IconWidget icon="ArrowUpSo" className="w-5 mr-1 fill-black rotate-180" />
+                        ) : (<IconWidget icon="SwapVert" className="w-5 mr-1 fill-black" />)}
                         <span className="text-sm ">오름차순</span>
                     </li>
                     <li className="flex px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -156,21 +166,55 @@ const TableBody = ({ data, columns, config, setColumns }) => {
                         className="px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                     >
                         <label className="w-full flex items-center justify-between cursor-pointer">
-                            {/* <input type="checkbox" value="" className="sr-only peer" /> */}
                             <span className="text-sm font-medium text-gray-900 dark:text-gray-300">열 숨기</span>
                             <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
                         </label>
+                    </li>
+                    <li
+                        onClick={() => option.toggleColumnDelete(option.config.column.accessorKey)}
+                        className="flex items-center justify-between px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    >
+                        <span className="text-sm font-medium text-red-500 dark:text-gray-300">삭제</span>
+                        <IconWidget icon="Delete" className="w-5 mr-1 fill-red-500" />
                     </li>
                 </ul>
             </div>
         );
     }
 
+    const alertMoreHoriz = (config) => {
+        let option = config.optionController;
+        return (
+            <div ref={option.optionMoreHorizBoxRef} className="absolute rounded-md bg-white dark:bg-gray-900 border shadow-md z-10 top-10 right-0">
+                <div className="flex p-2">
+                    <input type="text" className="border rounded bg-white dark:gb-gray-900 h-[30px] px-2 "
+                    // defaultValue={option.optionMoreHoriz.config.column.header}
+                    // onKeyUp={(e) => config.optionController.updateHeader(option.optionMoreHoriz.config.column.accessorKey, e.target.value)}
+                    />
+                </div>
+                <ul className="p-2 border-b">
+                    {
+                        config.columns.map((e, i) => (
+                            <li
+                                key={i}
+                                className="px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            >
+                                <label className="w-full flex items-center justify-between cursor-pointer">
+                                    <input type="checkbox" value="" className="sr-only peer" />
+                                    <span className="text-sm font-medium text-gray-900 dark:text-gray-300">{e.header}</span>
+                                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                </label>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        )
+    };
+
     const Thead = () => {
         const [columnWidths, setColumnWidths] = useState(columns.map(col => col.size || 100));
-
         const handleDragStart = (index, event) => {
-
             const startWidth = columns[index].size;
             const startX = event.clientX;
 
@@ -192,7 +236,6 @@ const TableBody = ({ data, columns, config, setColumns }) => {
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
         };
-
         return (
             <div className="flex">
                 {columns.map((col, i) => (
@@ -207,7 +250,6 @@ const TableBody = ({ data, columns, config, setColumns }) => {
                         style={{ width: col.size }}
                         className={`border p-2 text-xs text-center font-medium text-left text-gray-500 uppercase hover:bg-gray-100 relative ${config.draggableColumns.includes("*") || config.draggableColumns.includes(col.accessorKey) ? "cursor-move" : ""
                             }`}
-
                     >
                         {col.header}
                         <div
@@ -220,7 +262,9 @@ const TableBody = ({ data, columns, config, setColumns }) => {
                     <button type="button" onClick={config.init.addColumns}>
                         <IconWidget icon="Add" className={" cursor-pointer hover:bg-gray-200 rounded-lg p-1 mr-1"} />
                     </button>
-                    <IconWidget icon="MoreHoriz" className={"fill-black cursor-pointer hover:bg-gray-200 rounded-lg p-1"} />
+                    <button type="button" onClick={(e) => config.optionController.alertMoreHorizClick(e)} >
+                        <IconWidget icon="MoreHoriz" className={"fill-black cursor-pointer hover:bg-gray-200 rounded-lg p-1"} />
+                    </button>
                 </div>
             </div>
         );
@@ -228,48 +272,48 @@ const TableBody = ({ data, columns, config, setColumns }) => {
 
     const Tbody = () => {
 
+        const CellComponent = ({ col, colIndex, row, rowIndex, data, setData, handleEdit }) => {
+            return (
+                <div style={{ width: col.size }} className={`flex relative border min-h-10`}>
+                    <div className={` peer w-full flex items-center justify-center text-base text-xs font-semibold text-gray-900 dark:text-white text-center hover:bg-blue-50 ${colIndex === 0 ? 'flex items-center' : ''}`}>
+                        <CellController type={col.type} col={col} data={data} setData={setData} colIndex={colIndex} handleEdit={handleEdit} />
+                        {/* {col.cell ? col.cell({ row, rowIndex }) : row[col.accessorKey]} */}
+                    </div>
+                    <div onClick={() => config.init.addRowLog(rowIndex, colIndex)} className="absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer opacity-0  peer-hover:opacity-100 hover:opacity-100">
+                        +
+                    </div>
+                </div>
+            );
+        }; 
+
         return (
             <div className="bg-white divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                 {config.data.length > 0 ? (
-
                     data.map((row, rowIndex) => {
                         const isExpanded = config.init.expandedRows.includes(row.step);
                         const isWoExpanded = config.init.expandedRows.includes();
 
                         return (
                             <React.Fragment key={row.id} >
-                                <div className={`flex`} >
+                                <div className={`flex relative group`} >
+                                    <div className=" absolute top-1/2 left-2 z-10 -translate-y-1/2 ">
+                                        <input type="checkbox" className="opacity-0 checked:opacity-100 group-hover:opacity-100" checked={row.selection} onChange={() => config.selectedRowsController.toggleRowSelection(row.id)} />
+                                    </div>
                                     <div className="flex relative">
-                                        {columns.map((col, colIndex) => {
-                                            return (
-                                                <div
-                                                    key={`${row.id}_${colIndex}`}
-                                                    style={{ width: col.size }}
-                                                    className={`flex relative border group group-hover:opacity-100`}
-                                                >
-                                                    <div className={`w-full flex items-center justify-center text-base text-xs font-semibold text-gray-900 dark:text-white text-center ${colIndex == 0 ? 'flex items-center' : ''}`}>
-                                                        {/* {colIndex === 0 ? (
-                                                            <div onClick={() => config.init.toggleRow(row.id)} className="cursor-pointer hover:bg-gray-100 rounded-md ml-1 mr-2">
-                                                                <IconWidget icon="ArrowDown" className={`fill-black ${!isExpanded ? "-rotate-90" : ""}`} />
-                                                            </div>
-                                                        ) : ''} */}
-                                                        {col.cell ? col.cell({ row, rowIndex }) : row[col.accessorKey]}
-                                                    </div>
-                                                    <div onClick={() => config.init.addRowLog(rowIndex, colIndex)} className="absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer translate opacity-0 group-hover:opacity-100">+</div>
-                                                </div>
-                                            )
-                                        })}
+                                        {columns.map((col, colIndex) => (
+                                            <CellComponent
+                                                key={`${row.id}_${colIndex}`}
+                                                col={col}
+                                                colIndex={colIndex}
+                                                row={row}
+                                                rowIndex={rowIndex}
+                                                data={data[rowIndex]}
+                                                setData={setData}
+                                                handleEdit={config.init.handleEdit}
+                                            />
+                                        ))}
                                     </div>
                                 </div>
-                                {/* <tr key={`add_${row.id}`} className={`border text-sm cursor-pointer ${!isExpanded ? 'hidden' : ''}`}>
-                                    <td className="flex items-center p-2">
-                                        {
-                                            stp.map((e, i) => i > 0 ? (<div key={i} className="ml-3 "></div>) : '')
-                                        }
-                                        <IconWidget icon="Add" className={"text-black w-5 mr-1"} />
-                                        추가
-                                    </td>
-                                </tr> */}
                             </React.Fragment>
                         )
 
@@ -285,13 +329,15 @@ const TableBody = ({ data, columns, config, setColumns }) => {
         );
     }
 
-    return (<div className="w-full relative" id="mainTable">
-        <div className="bg-white min-w-full overflow-x-auto" id="FullScreen">
+    return (<div className="w-full relative" id="FullScreen">
+        <div className="bg-white min-w-full overflow-x-auto overflow-y-auto" >
             <div className="min-w-max table-fixed dark:divide-gray-600" >
                 <Thead />
                 <Tbody />
             </div>
+
             {config.optionController.config.isOpen && alert(config)}
+            {config.optionController.optionMoreHoriz.isOpen && alertMoreHoriz(config)}
         </div>
     </div>);
 }

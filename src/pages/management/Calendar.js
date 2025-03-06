@@ -98,7 +98,105 @@ const Calender = () => {
             <Header />
             <main className="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900 min-h-screen">
                 <Sidebar isOpen={sidebarOpen} toggleOpen={toggleSidebarOpen} />
-                
+                <div id="main-content" className={`relative w-full h-full overflow-y-auto bg-gray-50 dark:bg-gray-900 transition-width duration-200 ${sidebarOpen ? "lg:ml-14" : "lg:ml-64"}`}>
+                    <main className="min-h-screen dark:bg-gray-700">
+                        <section className="px-4 mt-4 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                            <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-1 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">제출서 작성</h2>
+                                <form action="#">
+                                    <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                                        <div className="sm:col-span-2">
+                                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">브랜드</label>
+                                            <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <option selected="">Select category</option>
+                                                <option value="TV">TV/Monitors</option>
+                                                <option value="PC">PC</option>
+                                                <option value="GA">Gaming/Console</option>
+                                                <option value="PH">Phones</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex justify-between sm:col-span-2">
+                                            <div className="w-1/2">
+                                                <label htmlFor="brand" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">이름(직위)</label>
+                                                <input type="text" name="brand" id="brand" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="" />
+                                            </div>
+                                            <div className="w-1/2 ml-2">
+                                                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">연차 갯수</label>
+                                                <input type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" />
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between sm:col-span-2">
+                                            <div className="w-1/2">
+                                                <label htmlFor="brand" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">입사일</label>
+                                                <input type="text" name="brand" id="brand" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="" />
+                                            </div>
+                                            <div className="w-1/2 ml-2">
+                                                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제추서 대기</label>
+                                                <input type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" />
+                                            </div>
+                                        </div>
+                                        <div className="sm:col-span-2">
+                                            <label htmlFor="item-weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">적용 날짜</label>
+                                            <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <option selected="">Select category</option>
+                                                <option value="TV">TV/Monitors</option>
+                                                <option value="PC">PC</option>
+                                                <option value="GA">Gaming/Console</option>
+                                                <option value="PH">Phones</option>
+                                            </select>
+                                        </div>
+                                        <div className="sm:col-span-2">
+                                            <label htmlFor="item-weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">구분</label>
+                                            <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                <option selected="">Select category</option>
+                                                <option value="TV">TV/Monitors</option>
+                                                <option value="PC">PC</option>
+                                                <option value="GA">Gaming/Console</option>
+                                                <option value="PH">Phones</option>
+                                            </select>
+                                        </div>
+                                        <div className="sm:col-span-2">
+                                            <div className="border rounded-lg p-4">
+                                                <h3 className="text-[1.7em] text-center font-bold mb-4">제출서</h3>
+                                                <div className="flex mb-2">
+                                                    <span className="text-sm">설명: </span>
+                                                    <span className="text-sm ml-20">직위: </span>
+                                                </div>
+                                                <div className="flex mb-2">
+                                                    <span className="text-sm mr-2">발생 사유: </span>
+                                                    <textarea className="text-sm w-[85%] focus:border-white"></textarea>
+                                                </div>
+                                                <div className="flex h-[10em]">
+                                                    <span className="text-sm mr-2">처리 내용:</span>
+                                                    <textarea className="text-sm w-[85%] focus:border-white"></textarea>
+                                                </div>
+                                                <p className="text-sm text-center mb-2 ">위와 같이 제출 합니다.</p>
+                                                <p className="text-sm text-center mb-2">년 월 일</p>
+                                                <p className="text-sm text-center">성명: <span>(인)</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                                        Add product
+                                    </button>
+                                </form>
+                            </div>
+                            <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">캔린더</h2>
+                                <ul className="">
+                                    <li className="flex items-center mb-4">
+                                        <div className="w-40 flex items-center">이름</div>
+                                        <span class="w-50 text-sm">비어 있음</span>
+                                    </li>
+                                    <li className="flex items-center mb-4">
+                                        <div className="w-40 flex items-center">조회 날짜</div>
+                                        <span class="w-50 text-sm">비어 있음</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </main>
+                </div>
             </main>
         </div>
     );

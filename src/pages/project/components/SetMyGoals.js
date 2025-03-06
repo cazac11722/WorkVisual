@@ -1,5 +1,5 @@
 import IconWidget from "../../../components/Widget/icon_widget";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useForm } from "../../../contexts/hooks/useForm";
 
@@ -48,7 +48,6 @@ const SetMyGoals = () => {
                 });
 
                 if (response.ok) {
-                    const result = await response.json();
                     if (viewIsOpen) {
                         toggleViewOpen();
                         list();

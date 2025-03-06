@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "../../../contexts/hooks/useForm";
 import IconWidget from "../../../components/Widget/icon_widget";
 
-const DepartmentSetModal = ({ onClose, data, setData }) => {
-    const [chData, setChData] = useState(data);
+const ConfigureProjectCategorySetModal = ({ onClose, data }) => {
+    const [chData, setChData] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 3; // ✅ 한 페이지당 3개씩 표시
 
     const { formState, mainUrl, handleChange, handleSubmit } = useForm(
-        { title: "", content: " ", level: 1, organization: data.id },
+        { name: "", description: " ", organization: data },
         async (json) => {
             try {
-                const response = await fetch(`${mainUrl}/api/accounts/organization-departments/`, {
+                const response = await fetch(`${mainUrl}/api/accounts/organization-project-scope/`, {
                     method: "POST",
                     headers: {
                         "Authorization": `Token ${localStorage.getItem('token')}`,
@@ -23,14 +23,8 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
                 if (response.ok) {
                     const result = await response.json();
                     alert("추가 완료 되었습니다.")
-                    setChData((prev) => ({
-                        ...prev,
-                        department_list: [...(prev.department_list || []), result]
-                    }));
-                    setData((prev) => ({
-                        ...prev,
-                        department_list: [...(prev.department_list || []), result]
-                    }));
+                    setChData((prev) => [ ...prev, result ]);
+
                 } else {
                     console.error("Login failed:", response.status);
                     // 오류 처리
@@ -41,9 +35,24 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
         }
     );
 
+    const list = useCallback(async () => {
+        const response = await fetch(`${mainUrl}/api/accounts/organization-project-scope/?organization=1`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Token ${localStorage.getItem('token')}`,
+                "Content-Type": "application/json"
+            },
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            setChData(result);
+        }
+    }, [])
+
     const deleteOn = async (id) => {
         try {
-            const response = await fetch(`${mainUrl}/api/accounts/organization-departments/${id}/`, {
+            const response = await fetch(`${mainUrl}/api/accounts/organization-project-scope/${id}/`, {
                 method: "Delete",
                 headers: {
                     "Authorization": `Token ${localStorage.getItem('token')}`,
@@ -54,14 +63,8 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
             if (response.ok) {
                 alert("삭제가 되었습니다.");
                 // ✅ 삭제된 항목을 목록에서 제거
-                setChData((prev) => ({
-                    ...prev,
-                    department_list: prev.department_list.filter(dept => dept.id !== id)
-                }));
-                setData((prev) => ({
-                    ...prev,
-                    department_list: prev.department_list.filter(dept => dept.id !== id)
-                }));
+                setChData((prev) => [ ...prev.filter(dept => dept.id !== id) ]);
+                
             } else {
                 console.error("Login failed:", response.status);
             }
@@ -71,17 +74,21 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
     }
 
     // ✅ 페이지네이션 계산
-    const totalPages = Math.ceil((chData.department_list?.length || 0) / itemsPerPage);
+    const totalPages = Math.ceil((chData?.length || 0) / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const filteredDepartments = chData.department_list?.slice(startIndex, endIndex) || [];
+    const filteredDepartments = chData?.slice(startIndex, endIndex) || [];
+
+    useEffect(() => {
+        list();
+    }, [list])
 
     return (
         <div className="relative lg:w-[50em] max-h-full">
             <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        부서 설정
+                        프로젝트 범위 설정
                     </h3>
                     <button type="button" onClick={onClose} className="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" >
                         <IconWidget icon="Close" className="fill-black" />
@@ -91,17 +98,17 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
                 <div className="p-4 md:p-5 grid grid-cols-1 lg:grid-cols-5 gap-4">
                     <form className="space-y-4 2xl:col-span-2" onSubmit={handleSubmit}>
                         <div className="col-span-2">
-                            <label htmlFor="department_title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목</label>
-                            <input type="text" name="title" id="department_title" value={formState.title} onChange={handleChange} required={true} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                            <label htmlFor="organization-project-scope-name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">제목</label>
+                            <input type="text" name="name" id="organization-project-scope-name" value={formState.name} onChange={handleChange} required={true} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                         </div>
                         <div className="col-span-2">
-                            <label htmlFor="department_contents" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">내용</label>
+                            <label htmlFor="organization-project-scope-description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">내용</label>
                             <textarea
                                 type="text"
                                 rows={5}
-                                id={`text_workResult`}
-                                name={`content`}
-                                value={formState.content}
+                                id={`organization-project-scope-description`}
+                                name={`description`}
+                                value={formState.description}
                                 onChange={handleChange}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             />
@@ -111,7 +118,7 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
                         </button>
                     </form>
                     <div className="2xl:col-span-3">
-                        <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">부서 목록</h3>
+                        <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">프로젝트 범위 목록</h3>
                         <table className="dark:divide-gray-600 w-full">
                             <thead className="bg-gray-50 dark:bg-gray-700">
                                 <tr>
@@ -125,10 +132,10 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
                                     filteredDepartments.map((e) => (
                                         <tr key={e.id}>
                                             <td className="border py-3 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                                {e.title}
+                                                {e.name}
                                             </td>
                                             <td className="border py-3 text-sm text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                                                {e.content}
+                                                {e.description}
                                             </td>
                                             <td className="border py-3 text-sm text-center font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                                 <button onClick={() => deleteOn(e.id)} type="button" className="bg-red-500 text-white px-2 py-1 rounded text-sm">
@@ -146,7 +153,7 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
                                 )}
                             </tbody>
                         </table>
-                        {/* ✅ 페이지네이션 */} 
+                        {/* ✅ 페이지네이션 */}
                         <div className="flex items-center justify-center  h-8 text-sm mt-5">
                             <button
                                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -180,4 +187,4 @@ const DepartmentSetModal = ({ onClose, data, setData }) => {
     );
 }
 
-export default DepartmentSetModal;
+export default ConfigureProjectCategorySetModal;

@@ -14,16 +14,17 @@ import { useSidebar } from "../../contexts/hooks/useSidebar";
 const View = () => {
   const { sidebarOpen, toggleSidebarOpen } = useSidebar();
   const [headerConfig, setHeaderConfig] = useState({
-    title: "관리자 팀원 프로젝트 관리",
+    title: "프로젝트 상세",
     ref: [
-      { title: "관리자", href: "#" },
-      { title: "팀원 프로젝트 관리", href: "#" },
+      { title: "내 프로젝트", href: "#" },
+      { title: "#", href: "#" },
     ],
     filter: false,
     back: false,
     titleShow: true,
     btn: ['download_file', 'print', 'delete']
   });
+
   return (
     <div className="bg-gray-50 dark:bg-gray-800">
       <Header />

@@ -73,16 +73,18 @@ const Init = (cle) => {
     // 업무 추가 함수
     const addWorkLog = () => {
         const newRow = {
-            id: uuidv4(),
-            date: new Date().toISOString().slice(0, 10),
-            startTime: null,
-            endTime: null,
-            detailedWorkTime: 0,
-            worker: "",
-            workId: uuidv4().slice(0, 5),
-            workResult: "입력해주세요.",
-            taskDescription: "입력해주세요.",
-            selection: false,
+            id: uuidv4(), // ID
+            update_date: new Date().toISOString().slice(0, 10), // 업로드 날짜
+            startTime: null, // 시작 날짜
+            endTime: null, // 종료 날짜
+            detailedWorkTime: 0, // 
+            worker: "", // 세부 시간
+            workId: uuidv4().slice(0, 5), // 고유 번호
+            selection: false, // 선택
+            text: {}, // 글자
+            number: {}, // 숫자
+            date: {}, // 날짜
+            time: {}, // 시간
         };
 
         cle.setData((prevData) => [...prevData, newRow]);
@@ -90,7 +92,7 @@ const Init = (cle) => {
 
     const addRowLog = (rowIndex, colIndex) => {
         let data = {};
-        
+
         cle.columns.forEach((e, i) => {
             if (i <= colIndex) {
                 data[e.accessorKey] = cle.data[rowIndex][e.accessorKey];
@@ -98,9 +100,9 @@ const Init = (cle) => {
                 data[e.accessorKey] = null;
             }
         });
-    
+
         data['id'] = uuidv4(); // 새로운 고유 ID 생성
-    
+
         cle.setData((prevData) => {
             const newData = [...prevData]; // 기존 데이터 복사
             newData.splice(rowIndex + 1, 0, data); // `rowIndex + 1` 위치에 새로운 행 삽입
@@ -110,9 +112,8 @@ const Init = (cle) => {
 
     // 열 업무 추가 함수
     const addColumns = () => {
-        cle.setColumns((prev) => [...prev, { accessorKey: "date", header: "날짜", size: 200, }])
+        cle.setColumns((prev) => [...prev, { accessorKey: uuidv4().slice(0, 5), header: "텍스트", size: 200, isOpen: true, type: 1 }])
     };
-
 
     // 시작 버튼 클릭 시
     const handleStart = (rowId) => {
@@ -149,17 +150,19 @@ const Init = (cle) => {
 
     // 특정 필드 수정 함수
     const handleEdit = (rowId, columnId, value) => {
+
         cle.setData((prevData) =>
-            prevData.map((row) =>
-                row.id === rowId ? { ...row, [columnId]: value } : row
-            )
+            prevData.map((row) => {
+                const d = row.id == rowId ? { ...row, [columnId]: value } : row
+                return d;
+            })
         );
+
     };
 
     const handleDeleteSelectedRows = () => {
         cle.setData((prevData) => prevData.filter((row) => !row.selection));
     };
-
 
     return { expandedRows: expandedRows, toggleRow: toggleRow, isFullScreen: isFullScreen, toggleFullScreen: toggleFullScreen, addWorkLog: addWorkLog, addRowLog: addRowLog, addColumns: addColumns, handleStart: handleStart, handleEnd: handleEnd, handleEdit: handleEdit, handleDeleteSelectedRows: handleDeleteSelectedRows }
 }
@@ -221,7 +224,13 @@ const SelectedRowsController = (cle) => {
 
 const OptionController = (cle) => {
     const [optionBox, setOptionBox] = useState({ isOpen: false, offset: { x: 0, y: 0 }, column: null });
+    const [optionMoreHoriz, setOptionMoreHoriz] = useState({
+        isOpen: false,
+        offset: { x: 0, y: 0 },
+    });
+
     const optionBoxRef = useRef(null);
+    const optionMoreHorizBoxRef = useRef(null);
 
     // // 헤더 클릭 시 옵션 박스 열기
     const handleHeaderClick = (e, column) => {
@@ -235,9 +244,25 @@ const OptionController = (cle) => {
         });
     };
 
+    const alertMoreHorizClick = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setOptionMoreHoriz({
+            isOpen: true,
+            offset: { x: rect.x, y: 37 },
+        });
+    };
+
     // // 열 숨기기 토글
     const toggleColumnVisibility = (accessorKey) => {
         setOptionBox((prev) => ({ ...prev, isOpen: false }));
+        cle.setColumns((prev) => (
+            prev.filter((col) => col.accessorKey !== accessorKey)
+        ));
+    };
+
+    const toggleColumnDelete = (accessorKey) => {
+        setOptionBox((prev) => ({ ...prev, isOpen: false }));
+
         cle.setColumns((prev) => (
             prev.filter((col) => col.accessorKey !== accessorKey)
         ));
@@ -250,18 +275,38 @@ const OptionController = (cle) => {
         );
     };
 
-    return { config: optionBox, optionBoxRef: optionBoxRef, setConfig: setOptionBox, handleHeaderClick: handleHeaderClick, toggleColumnVisibility: toggleColumnVisibility, updateHeader: updateHeader }
+    const updateTpye = (accessorKey, e) => {
+        setOptionBox((prev) => ({
+            ...prev,
+            column: ({
+                ...prev.column,
+                type: e.target.value,
+            })
+        }))
+        cle.setColumns((prevColumns) =>
+            prevColumns.map((col, i) => (col.accessorKey === accessorKey ? { ...col, type: e.target.value } : col))
+        );
+    };
+
+    return {
+        config: optionBox,
+        optionBoxRef: optionBoxRef,
+        optionMoreHoriz: optionMoreHoriz,
+        optionMoreHorizBoxRef: optionMoreHorizBoxRef,
+        setConfig: setOptionBox, handleHeaderClick: handleHeaderClick, toggleColumnVisibility: toggleColumnVisibility, updateHeader: updateHeader, updateTpye,
+        setOptionMoreHoriz: setOptionMoreHoriz, alertMoreHorizClick: alertMoreHorizClick, toggleColumnDelete, toggleColumnDelete
+    }
 }
 
 const SortController = (cle) => {
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
 
     // 정렬 함수
-    const handleSort = (accessorKey) => {
+    const handleSort = (accessorKey, value) => {
         setSortConfig((prev) => {
-            const isAscending = prev.key === accessorKey && prev.direction === "asc";
-            return { key: accessorKey, direction: isAscending ? "desc" : "asc" };
+            const isAscending = prev.direction !== value ? value : null;
+            return { key: accessorKey, direction: isAscending };
         });
         cle.setData((prevData) => {
             return [...prevData].sort((a, b) => {
@@ -319,6 +364,12 @@ const UseGlobalEventListener = (cle) => {
             cle.optionController.optionBoxRef.current && !cle.optionController.optionBoxRef.current.contains(event.target)
         ) {
             cle.optionController.setConfig((prev) => ({ ...prev, isOpen: false }));
+        }
+        if (
+            cle.optionController.optionMoreHorizBoxRef.current && !cle.optionController.optionMoreHorizBoxRef.current.contains(event.target)
+        ) {
+
+            cle.optionController.setOptionMoreHoriz((prev) => ({ ...prev, isOpen: false }));
         }
         if (
             cle.filterController.filterRef.current && !cle.filterController.filterRef.current.contains(event.target)
