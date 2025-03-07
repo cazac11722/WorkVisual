@@ -91,17 +91,66 @@ const Init = (cle) => {
     };
 
     const addRowLog = (rowIndex, colIndex) => {
-        let data = {};
+        let data = {
+            id: uuidv4(), // ID
+            update_date: new Date().toISOString().slice(0, 10), // 업로드 날짜
+            startTime: null, // 시작 날짜
+            endTime: null, // 종료 날짜
+            detailedWorkTime: 0, // 
+            worker: "", // 업무 결과
+            workId: "", // 고유 번호
+            selection: false, // 선택
+            text: {}, // 글자
+            number: {}, // 숫자
+            date: {}, // 날짜
+            time: {}, // 시간
+        };
+
 
         cle.columns.forEach((e, i) => {
-            if (i <= colIndex) {
-                data[e.accessorKey] = cle.data[rowIndex][e.accessorKey];
-            } else {
-                data[e.accessorKey] = null;
-            }
-        });
 
-        data['id'] = uuidv4(); // 새로운 고유 ID 생성
+            if (i <= colIndex && e.type == 1) {
+                data.text[e.accessorKey] = cle.data[rowIndex].text[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 2) {
+                data.number[e.accessorKey] = cle.data[rowIndex].number[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 3) {
+                data.date[e.accessorKey] = cle.data[rowIndex].date[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 4) {
+                data.time[e.accessorKey] = cle.data[rowIndex].time[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 5) {
+                data.worker = cle.data[rowIndex].worker
+            }
+
+            if (i <= colIndex && e.type == 6) {
+                data.text[e.accessorKey] = cle.data[rowIndex].text[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 7) {
+                data.time[e.accessorKey] = cle.data[rowIndex].time[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 8) {
+                data.workId = cle.data[rowIndex].workId
+            }
+
+            if (i <= colIndex && e.type == 9) {
+                data.text[e.accessorKey] = cle.data[rowIndex].text[e.accessorKey]
+            }
+
+            if (i <= colIndex && e.type == 10) {
+                data.startTime = cle.data[rowIndex].startTime
+                data.endTime = cle.data[rowIndex].endTime
+            }
+
+        });
 
         cle.setData((prevData) => {
             const newData = [...prevData]; // 기존 데이터 복사
@@ -112,7 +161,7 @@ const Init = (cle) => {
 
     // 열 업무 추가 함수
     const addColumns = () => {
-        cle.setColumns((prev) => [...prev, { accessorKey: uuidv4().slice(0, 5), header: "텍스트", size: 200, isOpen: true, type: 1 }])
+        cle.setColumns((prev) => [...prev, { accessorKey: uuidv4().slice(0, 5), header: "텍스트", size: 200, isOpen: true, type: '1' }])
     };
 
     // 시작 버튼 클릭 시
@@ -170,18 +219,34 @@ const Init = (cle) => {
 const FilterController = (cle) => {
 
     // 선택된 필터 행 저장 변수 
-    const [filterConfig, setFilterConfig] = useState({ key: null, val: "", isOpen: false, offset: { x: 0, y: 0 } });
+    const [filterConfig, setFilterConfig] = useState({ key: null, val: "", isOpen: false, offset: { x: 0, y: 0 }, list: [] });
+    const [filterFe, setFilterFe] = useState({ key: null, val: "", isOpen: false, offset: { x: 0, y: 0 } });
+
 
     const filterRef = useRef(null)
-
+    const filterFeRef = useRef(null)
+    
     const toggleIs = (e, isOpen) => {
+        e.stopPropagation();
+        // setFilterConfig((prev) => ({ ...prev, key: null, val: "", isOpen: isOpen, offset: { x: e.nativeEvent.offsetLeft, y: e.currentTarget.offsetTop + 37 }}))
+    }
 
-        setFilterConfig({ key: null, val: "", isOpen: isOpen, offset: { x: e.currentTarget.offsetLeft, y: e.currentTarget.offsetTop + 37 } })
+    const toggleFfilter = (e, isOpen, v) => {
+        e.stopPropagation();
+        // setFilterFe((prev) => ({ ...prev, key: v.accessorKey, val: "", isOpen: isOpen, offset: { x: e.nativeEvent.offsetLeft, y: e.currentTarget.offsetTop + 37 }}))
+    }
+
+    const toggleListAdd = (key, ftype) => {
+        if(!filterConfig.list.find((e) => e.accessorKey === key)) {
+            setFilterConfig((prev) => ({ ...prev, isOpen: false, list: [...prev.list, {accessorKey : key, value: null, type: ftype} ]}))
+        }else {
+            let fo = filterConfig.list.filter((f) => f.accessorKey == key ? false : true )
+            setFilterConfig((prev) => ({ ...prev, isOpen: false, list: fo}))
+        }
     }
 
 
-
-    return { config: filterConfig, setConfig: setFilterConfig, filterRef: filterRef, toggleIs: toggleIs }
+    return { config: filterConfig, setConfig: setFilterConfig, filterFe: filterFe, filterFeRef: filterFeRef, setFilterFe: setFilterFe, filterRef: filterRef, toggleIs: toggleIs, toggleListAdd : toggleListAdd, toggleFfilter: toggleFfilter }
 }
 
 const SelectedRowsController = (cle) => {
@@ -256,7 +321,10 @@ const OptionController = (cle) => {
     const toggleColumnVisibility = (accessorKey) => {
         setOptionBox((prev) => ({ ...prev, isOpen: false }));
         cle.setColumns((prev) => (
-            prev.filter((col) => col.accessorKey !== accessorKey)
+            prev.map((col) => ({
+                ...col,
+                isOpen: col.accessorKey == accessorKey ? !col.isOpen : col.isOpen
+            }))
         ));
     };
 
@@ -374,8 +442,14 @@ const UseGlobalEventListener = (cle) => {
         if (
             cle.filterController.filterRef.current && !cle.filterController.filterRef.current.contains(event.target)
         ) {
-            cle.filterController.setConfig({ key: null, val: "", isOpen: false, offset: { x: 0, y: 0 } });
+            cle.filterController.setConfig((prev) => ({ ...prev, key: null, val: "", isOpen: false, offset: { x: 0, y: 0 } }));
         }
+        if (
+            cle.filterController.filterFeRef.current && !cle.filterController.filterFeRef.current.contains(event.target)
+        ) {
+            cle.filterController.setFilterFe((prev) => ({ ...prev, key: null, val: "", isOpen: false, offset: { x: 0, y: 0 } }));
+        }
+
     };
 
     return { handleClickOutside: handleClickOutside }

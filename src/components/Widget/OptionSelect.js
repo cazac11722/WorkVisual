@@ -12,11 +12,12 @@ const OptionSelect = ({column, updateTpye}) => {
             <option value={6}>컨펌 요청</option>
             <option value={7}>시간별 평균값</option>
             <option value={8}>업무 고유번호</option>
-            <option value={9}>시간 엑션</option>
+            <option value={9}>시간/종료 버튼</option>
             <option value={10}>세부 작업 시간</option>
             <option value={11}>총 작업 시간</option>
+            <option value={12}>자동 날짜</option>
         </select>
     )
-}
+} 
 
 export default OptionSelect;

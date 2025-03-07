@@ -10,6 +10,7 @@ import SubHeader from "../../components/Body/SubHeader";
 import MainProjectFrom from "./components/MainProjectFrom";
 import SetMyGoals from "./components/SetMyGoals";
 import { useSidebar } from "../../contexts/hooks/useSidebar";
+import ChatRoom from "./components/ChatRoom";
 
 const View = () => {
   const { sidebarOpen, toggleSidebarOpen } = useSidebar();
@@ -35,6 +36,9 @@ const View = () => {
             <SubHeader headerConfig={headerConfig} />
             <section className="p-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
               <MainProjectFrom />
+            </section>
+            <section className="p-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
+              <ChatRoom  />
               <SetMyGoals />
             </section>
           </main>

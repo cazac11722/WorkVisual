@@ -17,7 +17,7 @@ const ProjectTable = ({ data, setData, columns, setColumns, config }) => {
     return (
         <>
             <TableHeader config={config} />
-            <TableFilter filterConfig={config.filterController} />
+            <TableFilter filterConfig={config.filterController} columns={columns} />
             <TableBody data={data} setData={setData} columns={columns} setColumns={setColumns} config={config} />
         </>
     );
@@ -51,10 +51,13 @@ const TableHeader = ({ config }) => {
     );
 }
 
-const TableFilter = ({ filterConfig }) => {
+const TableFilter = ({ filterConfig, columns }) => {
+    const [search, setSearch] = useState();
 
+    const list = search ? columns?.filter((prev) => prev.header.includes(search)) : columns;
     const alert = () => {
-        return (<div ref={filterConfig.filterRef} className={`absolute rounded-md bg-white dark:bg-gray-900 border shadow-md z-10`} id="option-box"
+
+        return (<div ref={filterConfig.filterRef} className={`absolute rounded-md bg-white dark:bg-gray-900 border shadow-md z-20`} id="option-box"
             style={{
                 left: filterConfig.config.offset.x,
                 top: filterConfig.config.offset.y,
@@ -62,29 +65,60 @@ const TableFilter = ({ filterConfig }) => {
         >
             <div className="flex p-2">
                 <div>
-                    <input type="text" className="border rounded bg-white dark:gb-gray-900 h-[30px] px-2 text-sm " placeholder="기준 필터" />
+                    <input type="text" value={search || ""} onChange={(e) => setSearch(e.target.value)} className="border rounded bg-white dark:gb-gray-900 h-[30px] px-2 text-sm " placeholder="기준 필터" />
                 </div>
             </div>
-            <ul className="p-2">
-                <li className="flex items-center px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <div className="icon">
-                        <IconWidget icon="FilterList" className="fill-black w-5 mr-1" />
-                    </div>
-                    <span className="text-sm ">필터</span>
-                </li>
+            <ul className="p-2 h-52 overflow-y-auto">
+                {
+                    list.map((e) => (
+                        <li key={e.accessorKey} onClick={() => filterConfig.toggleListAdd(e.accessorKey, e.type)} className="flex items-center px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <input type="checkbox" className="mr-2" checked={filterConfig.config.list.find((k) => k.accessorKey === e.accessorKey)}  onChange={() => {}}  />
+                            <span className="text-sm ">{e.header}</span>
+                        </li>
+                    ))
+                }
             </ul>
         </div>);
     }
 
+    const activeAlert = () => {
+        const handleChange = (e) => {
+            filterConfig.setConfig((prev) => ({
+                ...prev,
+                list: filterConfig.config.list.map((l) => l.accessorKey == filterConfig.filterFe.key ? ({
+                    ...l,
+                    value: e.target.value,
+                }) : l)
+            }))
+        }
+        return (
+            <div ref={filterConfig.filterFeRef} className={`absolute rounded-md bg-white dark:bg-gray-900 border shadow-md z-20`}
+                style={{
+                    left: filterConfig.filterFe.offset.x,
+                    top: filterConfig.filterFe.offset.y,
+                }}
+            >
+                <div className="p-2" >
+                    <input type="text" value={filterConfig.config.list.find((e) => e.accessorKey == filterConfig.filterFe.key).value || ""} onChange={(e) => handleChange(e)} className="border rounded bg-white dark:gb-gray-900 h-[30px] px-2 text-sm " placeholder="검색" />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-wrap items-center justify-between mb-4 px-1 relative">
-            <div className="relative w-48 mt-1 sm:w-64 xl:w-96">
+            <div className="relative mt-1">
                 <ul className="flex">
-                    <li className="flex items-center mr-4 bg-gray-200 py-1 px-2 rounded-lg cursor-pointer">
-                        <IconWidget icon="FilterList" className="mr-1 w-4 fill-black" />
-                        <span className="text-sm">날짜</span>
-                        <IconWidget icon="ArrowDown" className="ml-1 w-4 fill-black" />
-                    </li>
+                    {
+                        filterConfig.config.list?.map((f, i) => (
+                            <li key={i} onClick={(e) => filterConfig.toggleFfilter(e, true, f)} className="flex items-center mr-4 bg-gray-200 py-1 px-2 rounded-lg cursor-pointer">
+                                <IconWidget icon="FilterList" className="mr-1 w-4 fill-black" />
+                                <span className="text-sm">{columns.find((e) => e.accessorKey == f.accessorKey).header}</span>
+                                <span>: { f.value || ""}</span>
+                                <IconWidget icon="ArrowDown" className="ml-1 w-4 fill-black" />
+                            </li>
+                        ))
+                    }
                     <li className="flex items-center mr-4 py-1 px-2 rounded-lg cursor-pointer  hover:bg-gray-200" onClick={(e) => { filterConfig.toggleIs(e, true) }}>
                         <IconWidget icon="Add" className="mr-1 w-4 fill-black" />
                         <span className="text-sm"> 추가하기</span>
@@ -100,12 +134,12 @@ const TableFilter = ({ filterConfig }) => {
             </div>
 
             {filterConfig.config.isOpen ? alert() : ''}
+            {filterConfig.filterFe.isOpen && activeAlert()}
         </div>
     )
 }
 
 const TableBody = ({ data, setData, columns, config, setColumns }) => {
-
     const alert = (config) => {
         let option = config.optionController;
         let sort = config.sortController;
@@ -184,13 +218,11 @@ const TableBody = ({ data, setData, columns, config, setColumns }) => {
 
     const alertMoreHoriz = (config) => {
         let option = config.optionController;
+
         return (
-            <div ref={option.optionMoreHorizBoxRef} className="absolute rounded-md bg-white dark:bg-gray-900 border shadow-md z-10 top-10 right-0">
+            <div ref={option.optionMoreHorizBoxRef} className="absolute rounded-md bg-white dark:bg-gray-900 border shadow-md z-10 w-52 top-10 right-0">
                 <div className="flex p-2">
-                    <input type="text" className="border rounded bg-white dark:gb-gray-900 h-[30px] px-2 "
-                    // defaultValue={option.optionMoreHoriz.config.column.header}
-                    // onKeyUp={(e) => config.optionController.updateHeader(option.optionMoreHoriz.config.column.accessorKey, e.target.value)}
-                    />
+                    <h3 className="font-bold">숨기기 설정</h3>
                 </div>
                 <ul className="p-2 border-b">
                     {
@@ -200,7 +232,7 @@ const TableBody = ({ data, setData, columns, config, setColumns }) => {
                                 className="px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                             >
                                 <label className="w-full flex items-center justify-between cursor-pointer">
-                                    <input type="checkbox" value="" className="sr-only peer" />
+                                    <input type="checkbox" checked={!e.isOpen} onChange={() => option.toggleColumnVisibility(e.accessorKey)} className="sr-only peer" />
                                     <span className="text-sm font-medium text-gray-900 dark:text-gray-300">{e.header}</span>
                                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
                                 </label>
@@ -248,7 +280,7 @@ const TableBody = ({ data, setData, columns, config, setColumns }) => {
                         onDrop={() => (config.draggableColumns.includes("*") || config.draggableColumns.includes(col.accessorKey)) && config.draggedColumnController.handleDrop(i)}
 
                         style={{ width: col.size }}
-                        className={`border p-2 text-xs text-center font-medium text-left text-gray-500 uppercase hover:bg-gray-100 relative ${config.draggableColumns.includes("*") || config.draggableColumns.includes(col.accessorKey) ? "cursor-move" : ""
+                        className={`border p-2 text-xs text-center font-medium text-left text-gray-500 uppercase hover:bg-gray-100 relative ${col.isOpen ? "" : "hidden"} ${config.draggableColumns.includes("*") || config.draggableColumns.includes(col.accessorKey) ? "cursor-move" : ""
                             }`}
                     >
                         {col.header}
@@ -274,18 +306,19 @@ const TableBody = ({ data, setData, columns, config, setColumns }) => {
 
         const CellComponent = ({ col, colIndex, row, rowIndex, data, setData, handleEdit }) => {
             return (
-                <div style={{ width: col.size }} className={`flex relative border min-h-10`}>
+                <div style={{ width: col.size }} className={`flex relative border min-h-10 ${col.isOpen ? "" : "hidden"}`}>
                     <div className={` peer w-full flex items-center justify-center text-base text-xs font-semibold text-gray-900 dark:text-white text-center hover:bg-blue-50 ${colIndex === 0 ? 'flex items-center' : ''}`}>
-                        <CellController type={col.type} col={col} data={data} setData={setData} colIndex={colIndex} handleEdit={handleEdit} />
-                        {/* {col.cell ? col.cell({ row, rowIndex }) : row[col.accessorKey]} */}
+                        <CellController type={col.type} col={col} data={data} setData={setData} colIndex={colIndex} handleEdit={handleEdit} startBtn={config.init.handleStart} endBtn={config.init.handleEnd} />
                     </div>
                     <div onClick={() => config.init.addRowLog(rowIndex, colIndex)} className="absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer opacity-0  peer-hover:opacity-100 hover:opacity-100">
                         +
                     </div>
                 </div>
             );
-        }; 
-
+        };
+        const filterData = data.filter((row, rowIndex) => {
+            // let fore = config.filterController.config.list;
+        })
         return (
             <div className="bg-white divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                 {config.data.length > 0 ? (
@@ -338,6 +371,7 @@ const TableBody = ({ data, setData, columns, config, setColumns }) => {
 
             {config.optionController.config.isOpen && alert(config)}
             {config.optionController.optionMoreHoriz.isOpen && alertMoreHoriz(config)}
+
         </div>
     </div>);
 }

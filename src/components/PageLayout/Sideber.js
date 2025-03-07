@@ -35,21 +35,21 @@ const Sidebar = ({ isOpen, toggleOpen }) => {
                                     <IconWidget icon="Menu" className={`w-10 fill-black cursor-pointer ${isOpen ? '' : 'hidden'}`} />
                                 </button>
                             </li>
-                            <li>
+                            {/* <li>
                                 <SidebarItem href="/WorkVisual" name="대시보기" icon="Dashboard" textShow={isOpen} />
-                            </li>
+                            </li> */}
                             <li>
                                 <SidebarItem href={`/WorkVisual/p/${user.id}/list`} name="내 프로젝트" icon="Description" textShow={isOpen} />
                             </li>
                             <li className={`${user.id != 1 ? 'hidden' : ''}`}>
                                 <SidebarItemSub href={`/WorkVisual/admin`} name="조직 활동" icon="Public" textShow={isOpen} list={adminList} />
                             </li>
-                            <li>
+                            {/* <li>
                                 <SidebarItemSub href={`/m/${user.id}`} name="직원 활동 " icon="Monitoring" textShow={isOpen} list={userList} />
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <SidebarItem href={`/WorkVisual/c/${user.id}`} name="캘린더 " icon="CalendarMonth" textShow={isOpen} />
-                            </li>
+                            </li> */}
                             <li>
                                 <SidebarItem href={`/WorkVisual/profile/${user.id}`} name="프로필" icon="Settings" textShow={isOpen} />
                             </li>
