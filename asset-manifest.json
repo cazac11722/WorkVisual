@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/WorkVisual/static/css/main.826bce1d.css",
-    "main.js": "/WorkVisual/static/js/main.699173b5.js",
+    "main.js": "/WorkVisual/static/js/main.e5b029c6.js",
     "static/media/index.cjs": "/WorkVisual/static/media/index.c05687ef19f5bac24939.cjs",
     "static/media/apps.svg": "/WorkVisual/static/media/apps.9c586a3922fdc81148a8e74e3dafec3f.svg",
     "index.html": "/WorkVisual/index.html",
@@ -42,10 +42,10 @@
     "static/media/ChevronRight.svg": "/WorkVisual/static/media/ChevronRight.5248d16806a8a574dede33b460847cd9.svg",
     "static/media/check.svg": "/WorkVisual/static/media/check.14ef6b5f03f1276e855936235c6b5d58.svg",
     "main.826bce1d.css.map": "/WorkVisual/static/css/main.826bce1d.css.map",
-    "main.699173b5.js.map": "/WorkVisual/static/js/main.699173b5.js.map"
+    "main.e5b029c6.js.map": "/WorkVisual/static/js/main.e5b029c6.js.map"
   },
   "entrypoints": [
     "static/css/main.826bce1d.css",
-    "static/js/main.699173b5.js"
+    "static/js/main.e5b029c6.js"
   ]
 }
